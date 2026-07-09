@@ -24,6 +24,9 @@ export default function Nav() {
           <Link to="/concierge" style={{ ...s.link, ...(pathname === '/concierge' ? s.active : {}) }}>
             AI Concierge
           </Link>
+          <Link to="/guides" style={{ ...s.link, ...(pathname.startsWith('/guides') ? s.active : {}) }}>
+            Guides
+          </Link>
         </nav>
 
         <Link to="/search" style={s.cta}>Plan a Trip</Link>
@@ -47,6 +50,7 @@ export default function Nav() {
             ['Accessible Toilets', '/search?category=toilet'],
             ['Northern Fiji', '/search?division=Northern'],
             ['AI Concierge', '/concierge'],
+            ['Guides', '/guides'],
           ].map(([label, href]) => (
             <Link key={href} to={href} style={s.mobileLink} onClick={() => setOpen(false)}>
               {label}

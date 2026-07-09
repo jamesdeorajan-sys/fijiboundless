@@ -13,6 +13,8 @@
     "db:seed:remote": "wrangler d1 execute fijiboundless --file=database/seed.sql",
     "db:locations": "wrangler d1 execute fijiboundless --local --file=database/locations.sql",
     "db:locations:remote": "wrangler d1 execute fijiboundless --file=database/locations.sql",
+    "db:northern": "wrangler d1 execute fijiboundless --local --file=database/northern-expansion.sql",
+    "db:northern:remote": "wrangler d1 execute fijiboundless --file=database/northern-expansion.sql",
     "pages:dev": "wrangler pages dev dist --d1=DB=fijiboundless",
     "deploy": "npm run build && wrangler pages deploy dist"
   },
