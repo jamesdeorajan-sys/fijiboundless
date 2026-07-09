@@ -1,8 +1,11 @@
-import { json, err, cors, insertVerification } from '../_shared.js';
+import { json, err, cors, requireAdmin, insertVerification } from '../../_shared.js';
 
 export async function onRequestOptions() { return cors(); }
 
 export async function onRequestPost({ request, env }) {
+  const unauthorized = requireAdmin(request, env);
+  if (unauthorized) return unauthorized;
+
   let body;
   try { body = await request.json(); } catch { return err('Invalid JSON'); }
 
@@ -10,7 +13,7 @@ export async function onRequestPost({ request, env }) {
     const verificationId = await insertVerification(env, body);
     return json({ success: true, verification_id: verificationId }, 201);
   } catch (e) {
-    return err(e.message.includes('required') || e.message.startsWith('Invalid') ? e.message : 'Database error: ' + e.message,
-      e.message.includes('required') || e.message.startsWith('Invalid') ? 400 : 500);
+    const isValidation = e.message.includes('required') || e.message.startsWith('Invalid');
+    return err(isValidation ? e.message : 'Database error: ' + e.message, isValidation ? 400 : 500);
   }
 }

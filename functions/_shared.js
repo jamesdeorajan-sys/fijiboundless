@@ -20,10 +20,48 @@ export function cors() {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Password',
     },
   });
 }
+
+// Gate admin-only Pages Functions behind the ADMIN_PASSWORD env var / secret.
+// Returns an error Response if unauthorized, or null if the request may proceed.
+export function requireAdmin(request, env) {
+  const supplied = request.headers.get('X-Admin-Password') || '';
+  if (!env.ADMIN_PASSWORD || supplied !== env.ADMIN_PASSWORD) {
+    return err('Unauthorized', 401);
+  }
+  return null;
+}
+
+const VALID_VERIFY_STATUSES = ['verified', 'needs_update', 'closed_temp', 'closed_perm'];
+const VALID_VERIFY_SOURCES  = ['staff', 'community', 'partner', 'ai_vision'];
+
+// Shared by the public /api/verify and password-gated /api/admin/verify endpoints.
+export async function insertVerification(env, body) {
+  const { facility_id, verified_by, status, notes, verifier_name, photo_urls } = body;
+  if (!facility_id || !verified_by || !status) {
+    throw new Error('facility_id, verified_by, and status are required');
+  }
+  if (!VALID_VERIFY_STATUSES.includes(status)) throw new Error('Invalid status');
+  if (!VALID_VERIFY_SOURCES.includes(verified_by)) throw new Error('Invalid verified_by');
+
+  const result = await env.DB
+    .prepare('INSERT INTO verifications (facility_id, verified_by, verifier_name, status, notes, photo_urls) VALUES (?, ?, ?, ?, ?, ?)')
+    .bind(facility_id, verified_by, verifier_name || null, status, notes || null, photo_urls ? JSON.stringify(photo_urls) : null)
+    .run();
+
+  await env.DB
+    .prepare("UPDATE facilities SET updated_at = datetime('now') WHERE id = ?")
+    .bind(facility_id)
+    .run();
+
+  return result.meta.last_row_id;
+}
+
+export const CATEGORIES = ['toilet', 'hotel', 'restaurant', 'beach', 'transport', 'attraction', 'village', 'ferry'];
+export const DIVISIONS  = ['Western', 'Central', 'Northern', 'Eastern'];
 
 // Haversine distance in km
 export function haversineKm(lat1, lng1, lat2, lng2) {
