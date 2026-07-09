@@ -2,9 +2,6 @@
 -- Run: npm run db:init          (local dev)
 -- Run: npm run db:init:remote   (production)
 
-PRAGMA journal_mode = WAL;
-PRAGMA foreign_keys = ON;
-
 -- ── Facilities ────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS facilities (
   id             INTEGER PRIMARY KEY AUTOINCREMENT,

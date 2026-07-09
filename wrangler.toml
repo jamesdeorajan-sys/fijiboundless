@@ -8,7 +8,7 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "fijiboundless"
-database_id = "PASTE_YOUR_D1_ID_HERE"
+database_id = "2071ab8c-f315-452e-92b3-547f1f1018e8"
 
 # ── R2 Bucket (360° videos, accessibility photos) ────────────────────────────
 # After running `wrangler r2 bucket create fijiboundless-media`, uncomment below.
