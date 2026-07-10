@@ -6,15 +6,15 @@ export async function onRequestPost({ request, env }) {
   let body;
   try { body = await request.json(); } catch { return err('Invalid JSON'); }
 
-  const { placeName, address, category, accessibilityNotes, submitterEmail } = body;
+  const { placeName, address, category, accessibilityNotes, submitterEmail, suggestionType } = body;
   if (!placeName) return err('placeName is required');
   if (category && !CATEGORIES.includes(category)) return err('Invalid category');
 
   try {
     const result = await env.DB
-      .prepare(`INSERT INTO suggestions (place_name, address, category, accessibility_notes, submitter_email)
-                VALUES (?, ?, ?, ?, ?)`)
-      .bind(placeName, address || null, category || null, accessibilityNotes || null, submitterEmail || null)
+      .prepare(`INSERT INTO suggestions (place_name, address, category, accessibility_notes, submitter_email, suggestion_type)
+                VALUES (?, ?, ?, ?, ?, ?)`)
+      .bind(placeName, address || null, category || null, accessibilityNotes || null, submitterEmail || null, suggestionType || null)
       .run();
 
     // Email notification intentionally not wired up: Cloudflare Email Workers

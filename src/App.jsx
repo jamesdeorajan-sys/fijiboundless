@@ -16,6 +16,7 @@ import Suggest from './pages/Suggest.jsx'
 import NotFound from './pages/NotFound.jsx'
 import About from './pages/About.jsx'
 import Partner from './pages/Partner.jsx'
+import Contact from './pages/Contact.jsx'
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/suggest"                 element={<Suggest />} />
           <Route path="/about"                   element={<About />} />
           <Route path="/partner"                 element={<Partner />} />
+          <Route path="/contact"                 element={<Contact />} />
           <Route path="*"                        element={<NotFound />} />
         </Routes>
       </main>

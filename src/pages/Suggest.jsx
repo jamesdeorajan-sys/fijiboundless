@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO.js'
 
 const CATEGORIES = [
@@ -14,14 +14,34 @@ const CATEGORIES = [
   { value: 'ferry',       label: 'Ferry / marina' },
 ]
 
-const EMPTY = { placeName: '', address: '', category: '', accessibilityNotes: '', submitterEmail: '' }
+const MAX_NOTES = 1000
+
+const HEADINGS = {
+  verification: {
+    title: 'Submit a Verification',
+    sub: 'Help us verify accessibility data for a listed facility. Your submission is reviewed by our team within 48 hours.',
+  },
+  issue: {
+    title: 'Report an Accessibility Issue',
+    sub: "Let us know if accessibility information is incorrect, outdated, or if a facility has a live issue that needs alerting.",
+  },
+  default: {
+    title: 'Suggest a Place',
+    sub: "Know an accessible hotel, restaurant, beach, or facility in Fiji that isn't in our database yet? Tell us about it and we'll work on getting it verified.",
+  },
+}
 
 export default function Suggest() {
+  const [params] = useSearchParams()
+  const type = params.get('type') === 'verification' || params.get('type') === 'issue' ? params.get('type') : 'default'
+  const heading = HEADINGS[type]
+
   useSEO({
-    title: 'Suggest a Place | FijiBoundless',
-    description: 'Know an accessible place in Fiji we should verify? Suggest it to FijiBoundless.',
+    title: `${heading.title} | FijiBoundless`,
+    description: heading.sub,
   })
 
+  const EMPTY = { placeName: params.get('place') || '', address: '', category: '', accessibilityNotes: '', submitterEmail: '' }
   const [form, setForm]     = useState(EMPTY)
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState(null)
@@ -34,7 +54,7 @@ export default function Suggest() {
       const res = await fetch('/api/suggest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, suggestionType: type === 'default' ? null : type }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to submit suggestion')
@@ -51,50 +71,48 @@ export default function Suggest() {
     <div style={s.page}>
       <section style={s.hero}>
         <div style={s.heroInner}>
-          <h1 style={s.h1}>Suggest a place</h1>
-          <p style={s.sub}>
-            Know an accessible hotel, restaurant, beach, or facility in Fiji that isn't in our database yet?
-            Tell us about it and we'll work on getting it verified.
-          </p>
+          <h1 style={s.h1}>{heading.title}</h1>
+          <p style={s.sub}>{heading.sub}</p>
         </div>
       </section>
 
       <div style={s.container}>
         <form onSubmit={submit} style={s.form}>
           <div style={s.field}>
-            <label style={s.label}>Place name</label>
+            <label htmlFor="placeName" style={s.label}>Place name</label>
             <input
-              style={s.input} value={form.placeName}
+              id="placeName" style={s.input} value={form.placeName}
               onChange={e => set('placeName', e.target.value)} required
             />
           </div>
 
           <div className="grid-responsive-2col">
             <div style={s.field}>
-              <label style={s.label}>Address (optional)</label>
-              <input style={s.input} value={form.address} onChange={e => set('address', e.target.value)} />
+              <label htmlFor="address" style={s.label}>Address (optional)</label>
+              <input id="address" style={s.input} value={form.address} onChange={e => set('address', e.target.value)} />
             </div>
             <div style={s.field}>
-              <label style={s.label}>Type</label>
-              <select style={s.input} value={form.category} onChange={e => set('category', e.target.value)}>
+              <label htmlFor="category" style={s.label}>Type</label>
+              <select id="category" style={s.input} value={form.category} onChange={e => set('category', e.target.value)}>
                 {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
           </div>
 
           <div style={s.field}>
-            <label style={s.label}>What accessibility features do you know about?</label>
+            <label htmlFor="accessibilityNotes" style={s.label}>What accessibility features do you know about?</label>
             <textarea
-              style={s.textarea} rows={4} value={form.accessibilityNotes}
+              id="accessibilityNotes" style={s.textarea} rows={4} maxLength={MAX_NOTES} value={form.accessibilityNotes}
               onChange={e => set('accessibilityNotes', e.target.value)}
               placeholder="E.g. step-free entrance, accessible toilet, pool hoist, quiet dining area…"
             />
+            <span style={s.charCount}>{form.accessibilityNotes.length} / {MAX_NOTES}</span>
           </div>
 
           <div style={s.field}>
-            <label style={s.label}>Your email (optional, in case we have questions)</label>
+            <label htmlFor="submitterEmail" style={s.label}>Your email (optional, in case we have questions)</label>
             <input
-              type="email" style={s.input} value={form.submitterEmail}
+              id="submitterEmail" type="email" style={s.input} value={form.submitterEmail}
               onChange={e => set('submitterEmail', e.target.value)}
             />
           </div>
@@ -152,6 +170,7 @@ const s = {
     padding: '13px 24px', background: '#E8634A', color: '#FDFAF5',
     border: 'none', borderRadius: 8, fontSize: '0.95rem', fontWeight: 700,
   },
+  charCount: { fontSize: '0.72rem', color: '#8C7355', alignSelf: 'flex-end' },
   success: { fontSize: '0.88rem', color: '#1B5E20', fontWeight: 600 },
   error: { fontSize: '0.88rem', color: '#B71C1C', fontWeight: 600 },
   backLink: { marginTop: 20, fontSize: '0.85rem', color: '#E8634A', fontWeight: 600 },

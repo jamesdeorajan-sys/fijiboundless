@@ -243,9 +243,12 @@ export default function Facility() {
             <p style={s.verifySub}>
               Help keep FijiBoundless accurate. Submit an update if anything has changed.
             </p>
-            <a href={`mailto:verify@fijiboundless.com?subject=Update: ${facility.name}`} style={s.verifyLink}>
+            <Link to={`/suggest?type=verification&place=${encodeURIComponent(facility.name)}`} style={s.verifyLink}>
               Submit update →
-            </a>
+            </Link>
+            <Link to={`/suggest?type=issue&place=${encodeURIComponent(facility.name)}`} style={s.verifyLink}>
+              Report an accessibility issue →
+            </Link>
           </div>
 
           {facility.last_verified && (
@@ -345,6 +348,6 @@ const s = {
     color: '#A8D5BA', fontSize: '0.95rem', marginBottom: 6,
   },
   verifySub: { color: 'rgba(253,250,245,0.6)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: 12 },
-  verifyLink: { color: '#E8634A', fontSize: '0.85rem', fontWeight: 700 },
+  verifyLink: { display: 'block', color: '#E8634A', fontSize: '0.85rem', fontWeight: 700, marginTop: 8 },
   lastChecked: { marginTop: 14, fontSize: '0.75rem', color: '#7A6E60', textAlign: 'center' },
 }

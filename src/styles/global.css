@@ -94,6 +94,15 @@ img { display: block; max-width: 100%; }
   top: 12px;
 }
 
+.footer-copy-link {
+  text-decoration: none;
+}
+
+.footer-copy-link:hover,
+.footer-copy-link:focus {
+  text-decoration: underline;
+}
+
 /* Respect reduced-motion preference — the "live" pulse dots and shimmer
    skeletons are decorative, not load-bearing for comprehension. */
 @media (prefers-reduced-motion: reduce) {
@@ -159,6 +168,25 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 640px) {
   .grid-responsive-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Contact page: 4 cards side by side, collapsing at narrower widths. */
+.contact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .contact-cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .contact-cards-grid {
     grid-template-columns: 1fr;
   }
 }

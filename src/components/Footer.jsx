@@ -29,15 +29,17 @@ export default function Footer() {
             <p style={s.colHead}>Community</p>
             <Link to="/suggest" style={s.footLink}>Suggest a Place</Link>
             <Link to="/partner" style={s.footLink}>Partner With Us</Link>
-            <a href="mailto:verify@fijiboundless.com" style={s.footLink}>Submit a Verification</a>
-            <a href="mailto:alert@fijiboundless.com" style={s.footLink}>Report an Issue</a>
-            <a href="mailto:hello@fijiboundless.com" style={s.footLink}>Contact Us</a>
+            <Link to="/suggest?type=verification" style={s.footLink}>Submit a Verification</Link>
+            <Link to="/contact#report" style={s.footLink}>Report an Issue</Link>
+            <Link to="/contact" style={s.footLink}>Contact Us</Link>
           </div>
         </div>
       </div>
 
       <div style={s.bottom}>
-        <p style={s.copy}>© {new Date().getFullYear()} FijiBoundless. Data verified by real humans on the ground.</p>
+        <p style={s.copy}>
+          © {new Date().getFullYear()} Vakaviti AI · A <a href="https://fjitourismguide.com" target="_blank" rel="noopener noreferrer" className="footer-copy-link" style={s.copyLink}>Fiji Tourism Guide</a> brand · Powered by <a href="https://vakaviti.ai" target="_blank" rel="noopener noreferrer" className="footer-copy-link" style={s.copyLink}>Vakaviti AI</a>
+        </p>
         <div style={s.liveRow}>
           <span style={s.liveDot} />
           <span style={s.liveText}>Live accessibility data</span>
@@ -86,6 +88,7 @@ const s = {
     flexWrap: 'wrap', gap: 12,
   },
   copy: { fontSize: '0.78rem', color: 'rgba(253,250,245,0.35)' },
+  copyLink: { color: 'rgba(168,213,186,0.7)', textDecoration: 'none' },
   liveRow: { display: 'flex', alignItems: 'center', gap: 6 },
   liveDot: {
     width: 7, height: 7, borderRadius: '50%',
