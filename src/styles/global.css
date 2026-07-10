@@ -74,3 +74,45 @@ img { display: block; max-width: 100%; }
   outline: 3px solid var(--coral);
   outline-offset: 3px;
 }
+
+/* Nav responsive collapse — inline styles can't express media queries, so
+   the desktop links/CTA vs. mobile burger toggle live here instead. Without
+   this, the burger never appears and the full desktop nav row overflows
+   every page horizontally on narrow viewports. */
+.nav-links,
+.nav-cta {
+  display: flex;
+}
+.nav-burger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+  .nav-burger {
+    display: block;
+  }
+}
+
+/* Facility detail layout — inline styles can't express media queries, so the
+   responsive column stacking lives here instead. Without this, the fixed
+   260px sidebar column forces horizontal overflow on narrow viewports. */
+.facility-body {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .facility-body {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .facility-aside {
+    position: static !important;
+  }
+}

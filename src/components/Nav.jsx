@@ -14,7 +14,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav style={s.nav} aria-label="Main navigation">
+        <nav className="nav-links" style={s.nav} aria-label="Main navigation">
           <Link to="/search" style={{ ...s.link, ...(pathname === '/search' ? s.active : {}) }}>
             Find Facilities
           </Link>
@@ -29,10 +29,11 @@ export default function Nav() {
           </Link>
         </nav>
 
-        <Link to="/search" style={s.cta}>Plan a Trip</Link>
+        <Link to="/search" className="nav-cta" style={s.cta}>Plan a Trip</Link>
 
         {/* Mobile toggle */}
         <button
+          className="nav-burger"
           style={s.burger}
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
@@ -85,7 +86,7 @@ const s = {
     fontWeight: 700, fontSize: '1.15rem',
     color: '#FDFAF5', letterSpacing: '0.02em',
   },
-  nav: { display: 'flex', gap: 4, flex: 1 },
+  nav: { gap: 4, flex: 1 },
   link: {
     padding: '6px 14px',
     borderRadius: 6,
@@ -108,11 +109,9 @@ const s = {
     transition: 'background 200ms',
   },
   burger: {
-    display: 'none',
     background: 'none', border: 'none',
     color: '#FDFAF5', fontSize: '1.2rem',
     padding: '8px',
-    '@media(max-width:768px)': { display: 'block' },
   },
   mobileMenu: {
     display: 'flex', flexDirection: 'column',

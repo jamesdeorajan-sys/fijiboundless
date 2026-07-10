@@ -151,7 +151,7 @@ export default function Facility() {
       )}
 
       {/* ── Accessibility data ── */}
-      <div style={s.body}>
+      <div className="facility-body">
         <div style={s.featuresCol}>
           <h2 style={s.sectionHead}>Accessibility data</h2>
           {sections.length === 0 && (
@@ -177,7 +177,7 @@ export default function Facility() {
         </div>
 
         {/* ── Sidebar ── */}
-        <aside style={s.aside}>
+        <aside className="facility-aside" style={s.aside}>
           {facility.phone && (
             <a href={`tel:${facility.phone}`} style={s.contactBtn}>📞 {facility.phone}</a>
           )}
@@ -244,7 +244,6 @@ const s = {
   alertType: { fontWeight: 700, color: '#E65100', fontSize: '0.8rem', textTransform: 'uppercase' },
   alertMsg: { fontSize: '0.88rem', color: '#4A3F2F', flex: 1 },
   alertDate: { fontSize: '0.75rem', color: '#7A6E60' },
-  body: { display: 'grid', gridTemplateColumns: '1fr 260px', gap: 40, alignItems: 'start' },
   featuresCol: {},
   sectionHead: {
     fontFamily: "'Playfair Display', serif",
