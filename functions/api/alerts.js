@@ -1,4 +1,4 @@
-import { json, err, cors } from '../_shared.js';
+import { json, err, cors, scheduleAlertClassification } from '../_shared.js';
 
 const VALID_TYPES = ['ramp_repair','hoist_down','flooded','closed_temp','road_damage','ferry_cancelled','power_outage','other'];
 
@@ -23,7 +23,7 @@ export async function onRequestGet({ request, env }) {
   }
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   let body;
   try { body = await request.json(); } catch { return err('Invalid JSON'); }
 
@@ -37,7 +37,10 @@ export async function onRequestPost({ request, env }) {
       .bind(facility_id, alert_type, message, reported_by || 'anonymous')
       .run();
 
-    return json({ success: true, alert_id: result.meta.last_row_id }, 201);
+    const alertId = result.meta.last_row_id;
+    scheduleAlertClassification(waitUntil, env, alertId, alert_type, message);
+
+    return json({ success: true, alert_id: alertId }, 201);
   } catch (e) {
     return err('Database error: ' + e.message, 500);
   }

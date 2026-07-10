@@ -49,6 +49,26 @@ const ALERT_LABELS = {
   power_outage: 'Power outage',
   other: 'Alert',
 }
+const SEVERITY_COLORS = { low: '#C08A1A', medium: '#E65100', high: '#B71C1C', critical: '#7A0000' }
+
+function PhotoStrip({ photoUrls }) {
+  let urls = []
+  if (photoUrls) {
+    try {
+      const parsed = JSON.parse(photoUrls)
+      if (Array.isArray(parsed)) urls = parsed.filter(u => typeof u === 'string')
+    } catch { /* malformed photo_urls — treat as no photos */ }
+  }
+  if (urls.length === 0) return null
+
+  return (
+    <div style={s.photoStrip}>
+      {urls.map((url, i) => (
+        <img key={i} src={url} alt={`Facility photo ${i + 1}`} style={s.photoThumb} loading="lazy" />
+      ))}
+    </div>
+  )
+}
 
 function FeatureValue({ row, facility }) {
   const val = facility[row.key]
@@ -134,6 +154,9 @@ export default function Facility() {
         <VerifiedBadge facility={facility} />
       </div>
 
+      {/* ── Photo strip ── */}
+      <PhotoStrip photoUrls={facility.photo_urls} />
+
       {/* ── Active alerts ── */}
       {active_alerts?.length > 0 && (
         <div style={s.alertsBox}>
@@ -141,7 +164,15 @@ export default function Facility() {
           {active_alerts.map(a => (
             <div key={a.id} style={s.alert}>
               <span style={s.alertType}>{ALERT_LABELS[a.alert_type] || 'Alert'}</span>
+              {a.ai_severity && (
+                <span style={{ ...s.severityBadge, background: SEVERITY_COLORS[a.ai_severity] || '#7A6E60' }}>
+                  {a.ai_severity.toUpperCase()}
+                </span>
+              )}
               <span style={s.alertMsg}>{a.message}</span>
+              {a.ai_resolution_estimate && (
+                <span style={s.alertEstimate}>Est. resolution: {a.ai_resolution_estimate}</span>
+              )}
               <span style={s.alertDate}>
                 Reported {new Date(a.reported_at).toLocaleDateString('en-FJ')}
               </span>
@@ -232,6 +263,14 @@ const s = {
     color: '#0D2B3E', lineHeight: 1.2,
   },
   address: { fontSize: '0.88rem', color: '#4A3F2F', marginTop: 8 },
+  photoStrip: {
+    display: 'flex', gap: 12, overflowX: 'auto', marginBottom: 28,
+    paddingBottom: 4,
+  },
+  photoThumb: {
+    width: 200, height: 140, objectFit: 'cover', borderRadius: 10,
+    border: '1px solid #D4C9B0', flexShrink: 0,
+  },
   alertsBox: {
     background: '#FFF3E0', border: '1px solid #FFB300',
     borderRadius: 10, padding: '18px 20px', marginBottom: 28,
@@ -244,6 +283,11 @@ const s = {
   alertType: { fontWeight: 700, color: '#E65100', fontSize: '0.8rem', textTransform: 'uppercase' },
   alertMsg: { fontSize: '0.88rem', color: '#4A3F2F', flex: 1 },
   alertDate: { fontSize: '0.75rem', color: '#7A6E60' },
+  severityBadge: {
+    fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.04em',
+    color: '#FDFAF5', padding: '2px 8px', borderRadius: 4,
+  },
+  alertEstimate: { fontSize: '0.78rem', color: '#8C7355', fontStyle: 'italic', width: '100%' },
   featuresCol: {},
   sectionHead: {
     fontFamily: "'Playfair Display', serif",

@@ -1,10 +1,10 @@
-import { json, err, cors, requireAdmin } from '../../_shared.js';
+import { json, err, cors, requireAdmin, scheduleAlertClassification } from '../../_shared.js';
 
 const VALID_TYPES = ['ramp_repair','hoist_down','flooded','closed_temp','road_damage','ferry_cancelled','power_outage','other'];
 
 export async function onRequestOptions() { return cors(); }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   const unauthorized = requireAdmin(request, env);
   if (unauthorized) return unauthorized;
 
@@ -21,7 +21,10 @@ export async function onRequestPost({ request, env }) {
       .bind(facility_id, alert_type, message, reported_by || 'FijiBoundless Admin')
       .run();
 
-    return json({ success: true, alert_id: result.meta.last_row_id }, 201);
+    const alertId = result.meta.last_row_id;
+    scheduleAlertClassification(waitUntil, env, alertId, alert_type, message);
+
+    return json({ success: true, alert_id: alertId }, 201);
   } catch (e) {
     return err('Database error: ' + e.message, 500);
   }

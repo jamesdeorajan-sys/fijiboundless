@@ -103,6 +103,7 @@ function AdminPanel({ password }) {
         <VerificationForm adminPost={adminPost} facilities={facilities} />
         <AlertForm adminPost={adminPost} facilities={facilities} onCreated={loadAlerts} />
         <ResolveAlertForm adminPost={adminPost} alerts={alerts} onResolved={loadAlerts} />
+        <AuditLogPanel adminPost={adminPost} password={password} />
       </div>
     </div>
   )
@@ -341,6 +342,73 @@ function ResolveAlertForm({ adminPost, alerts, onResolved }) {
   )
 }
 
+function AuditLogPanel({ adminPost, password }) {
+  const [runs, setRuns]       = useState([])
+  const [loading, setLoading] = useState(true)
+  const [running, setRunning] = useState(false)
+  const [status, setStatus]   = useState(null)
+
+  const loadRuns = useCallback(() => {
+    setLoading(true)
+    fetch('/api/admin/audit-log', { headers: { 'X-Admin-Password': password } })
+      .then(r => r.json())
+      .then(d => setRuns(d.runs || []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [password])
+
+  useEffect(() => { loadRuns() }, [loadRuns])
+
+  async function runNow() {
+    setRunning(true); setStatus(null)
+    try {
+      const data = await adminPost('/api/admin/run-audit', {})
+      setStatus({ ok: true, message: `Audit complete: ${data.facilities_flagged} flagged, ${data.alerts_posted} alerts posted.` })
+      loadRuns()
+    } catch (e) {
+      setStatus({ ok: false, message: e.message })
+    } finally {
+      setRunning(false)
+    }
+  }
+
+  return (
+    <Panel title="6. Audit log">
+      <button type="button" style={s.submitBtn} onClick={runNow} disabled={running}>
+        {running ? 'Running audit…' : 'Run audit now'}
+      </button>
+      <StatusMsg status={status} />
+
+      {loading ? (
+        <p style={s.empty}>Loading audit history…</p>
+      ) : runs.length === 0 ? (
+        <p style={s.empty}>No audit runs yet.</p>
+      ) : (
+        <table style={s.auditTable}>
+          <thead>
+            <tr>
+              <th style={s.auditTh}>Date</th>
+              <th style={s.auditTh}>Facilities flagged</th>
+              <th style={s.auditTh}>Alerts posted</th>
+              <th style={s.auditTh}>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {runs.map(r => (
+              <tr key={r.id}>
+                <td style={s.auditTd}>{new Date(r.run_at).toLocaleString('en-FJ')}</td>
+                <td style={s.auditTd}>{r.facilities_flagged}</td>
+                <td style={s.auditTd}>{r.alerts_posted}</td>
+                <td style={s.auditTd}>{r.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </Panel>
+  )
+}
+
 const s = {
   gatePage: {
     minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
@@ -404,5 +472,14 @@ const s = {
   resolveBtn: {
     flexShrink: 0, padding: '7px 14px', background: '#0D2B3E', color: '#A8D5BA',
     border: 'none', borderRadius: 6, fontSize: '0.78rem', fontWeight: 700,
+  },
+  auditTable: { width: '100%', borderCollapse: 'collapse', marginTop: 16, fontSize: '0.82rem' },
+  auditTh: {
+    textAlign: 'left', padding: '8px 10px', color: '#8C7355',
+    fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.05em',
+    textTransform: 'uppercase', borderBottom: '1px solid #D4C9B0',
+  },
+  auditTd: {
+    padding: '8px 10px', color: '#1A1208', borderBottom: '1px solid #EDE7D8', verticalAlign: 'top',
   },
 }

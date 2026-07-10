@@ -58,10 +58,13 @@ export async function onRequestPost({ request, env }) {
       .sort((a, b) => b._score - a._score)
       .slice(0, MAX_CANDIDATES);
 
-    const itinerary = await callClaude(env, { wheelchairType, hoistRequired, sensitivities, divisions, categories, tripLengthDays, notes }, candidates);
+    const needsForClaude = { wheelchairType, hoistRequired, sensitivities, divisions, categories, tripLengthDays, notes };
+    const itinerary = await callClaude(env, needsForClaude, candidates);
+    const anxietyGuide = await callAnxietyGuide(env, needsForClaude, itinerary).catch(() => null);
 
     return json({
       itinerary,
+      anxietyGuide,
       facilities: candidates.map(({ _score, ...f }) => f),
     });
   } catch (e) {
@@ -111,6 +114,41 @@ Write in Markdown with a short intro, then "## Day N" headings. Keep it concise 
 Verified/candidate facilities (JSON):
 ${JSON.stringify(facilityList)}`;
 
+  return anthropicMessage(env, { system: systemPrompt, user: userPrompt, maxTokens: 1800 });
+}
+
+// Second Claude call: turns the itinerary into a calm, concrete "what to
+// expect" walkthrough for travellers who experience travel anxiety.
+async function callAnxietyGuide(env, needs, itineraryText) {
+  const needsSummary = [
+    `wheelchair type: ${needs.wheelchairType}`,
+    needs.hoistRequired ? 'requires hoist access' : null,
+    needs.sensitivities.length ? `sensory sensitivities: ${needs.sensitivities.join(', ')}` : null,
+    needs.notes ? `additional context: ${needs.notes}` : null,
+  ].filter(Boolean).join('; ');
+
+  const system = `You write calm, reassuring, concrete "what to expect" travel guides for anxious travellers.
+Tone: warm, specific, never patronising. No generic platitudes — give exact sequences, exact phrases to say,
+and a contingency plan for each day. Write in Markdown with "## Day N" headings matching the itinerary given.
+Keep it under 500 words.`;
+
+  const user = `Given this itinerary:
+
+${itineraryText}
+
+Write a calm, reassuring day-by-day "what to expect" guide for a traveller with these accessibility needs who
+experiences travel anxiety: ${needsSummary || 'no specific needs given'}.
+
+For each day, focus on:
+- The exact arrival sequence (what happens first, second, third)
+- Who to speak to and what to say if they need help
+- The sensory environment they can expect at each step (noise, crowds, lighting)
+- A contingency plan if something isn't as expected`;
+
+  return anthropicMessage(env, { system, user, maxTokens: 1400 });
+}
+
+async function anthropicMessage(env, { system, user, maxTokens }) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -120,9 +158,9 @@ ${JSON.stringify(facilityList)}`;
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1800,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userPrompt }],
+      max_tokens: maxTokens,
+      system,
+      messages: [{ role: 'user', content: user }],
     }),
   });
 
@@ -133,6 +171,6 @@ ${JSON.stringify(facilityList)}`;
 
   const data = await res.json();
   const text = data.content?.find(block => block.type === 'text')?.text;
-  if (!text) throw new Error('Anthropic API returned no itinerary text');
+  if (!text) throw new Error('Anthropic API returned no text');
   return text;
 }

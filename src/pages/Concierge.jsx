@@ -75,6 +75,8 @@ export default function Concierge() {
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState(null)
   const [itinerary, setItinerary] = useState(null)
+  const [anxietyGuide, setAnxietyGuide] = useState(null)
+  const [showAnxietyGuide, setShowAnxietyGuide] = useState(false)
   const [facilities, setFacilities] = useState([])
 
   function toggle(list, setList, value) {
@@ -83,7 +85,7 @@ export default function Concierge() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setLoading(true); setError(null); setItinerary(null); setFacilities([])
+    setLoading(true); setError(null); setItinerary(null); setAnxietyGuide(null); setFacilities([])
     try {
       const res = await fetch('/api/concierge', {
         method: 'POST',
@@ -93,6 +95,7 @@ export default function Concierge() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to build itinerary')
       setItinerary(data.itinerary)
+      setAnxietyGuide(data.anxietyGuide || null)
       setFacilities(data.facilities || [])
     } catch (e) {
       setError(e.message)
@@ -103,7 +106,7 @@ export default function Concierge() {
 
   return (
     <div style={s.page}>
-      <section style={s.hero}>
+      <section className="no-print" style={s.hero}>
         <div style={s.heroInner}>
           <div style={s.eyebrow}>
             <span style={s.liveDot} />
@@ -118,7 +121,7 @@ export default function Concierge() {
       </section>
 
       <div style={s.container}>
-        <form onSubmit={handleSubmit} style={s.form}>
+        <form onSubmit={handleSubmit} className="no-print" style={s.form}>
           <div style={s.formGrid}>
             <div style={s.field}>
               <label style={s.label}>Wheelchair type</label>
@@ -204,20 +207,43 @@ export default function Concierge() {
           </button>
         </form>
 
-        {error && <div style={s.error}>⚠ {error}</div>}
+        {error && <div className="no-print" style={s.error}>⚠ {error}</div>}
 
         {itinerary && (
           <div style={s.result}>
-            <h2 style={s.resultTitle}>Your personalised itinerary</h2>
+            <div style={s.resultHeader}>
+              <h2 style={s.resultTitle}>Your personalised itinerary</h2>
+              <button type="button" className="no-print" style={s.printBtn} onClick={() => window.print()}>
+                🖨️ Print itinerary
+              </button>
+            </div>
             <div style={s.itineraryBody}>{renderItinerary(itinerary)}</div>
 
+            {anxietyGuide && (
+              <div style={s.anxietySection}>
+                <button
+                  type="button"
+                  className="no-print"
+                  style={s.anxietyToggle}
+                  onClick={() => setShowAnxietyGuide(v => !v)}
+                  aria-expanded={showAnxietyGuide}
+                >
+                  <span>🧠 Reduce travel anxiety — what to expect, step by step</span>
+                  <span>{showAnxietyGuide ? '−' : '+'}</span>
+                </button>
+                {showAnxietyGuide && (
+                  <div style={s.anxietyBody}>{renderItinerary(anxietyGuide)}</div>
+                )}
+              </div>
+            )}
+
             {facilities.length > 0 && (
-              <>
+              <div className="no-print">
                 <h3 style={s.resultSubtitle}>Facilities referenced</h3>
                 <div style={s.grid}>
                   {facilities.map(f => <FacilityCard key={f.id} facility={f} />)}
                 </div>
-              </>
+              </div>
             )}
           </div>
         )}
@@ -292,7 +318,12 @@ const s = {
   },
 
   result: { marginTop: 36 },
-  resultTitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', color: '#0D2B3E', marginBottom: 16 },
+  resultHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16, flexWrap: 'wrap' },
+  resultTitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', color: '#0D2B3E' },
+  printBtn: {
+    padding: '8px 16px', background: '#FDFAF5', border: '1px solid #D4C9B0',
+    borderRadius: 7, fontSize: '0.82rem', fontWeight: 600, color: '#0D2B3E',
+  },
   resultSubtitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', color: '#0D2B3E', margin: '28px 0 16px' },
   itineraryBody: {
     background: '#FDFAF5', border: '1px solid #D4C9B0', borderRadius: 12, padding: '24px 26px',
@@ -305,5 +336,16 @@ const s = {
 
   grid: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16,
+  },
+
+  anxietySection: { marginTop: 20 },
+  anxietyToggle: {
+    width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    padding: '14px 20px', background: '#0D2B3E', color: '#A8D5BA',
+    border: 'none', borderRadius: 10, fontSize: '0.92rem', fontWeight: 700, textAlign: 'left',
+  },
+  anxietyBody: {
+    background: '#FDFAF5', border: '1px solid #D4C9B0', borderTop: 'none',
+    borderRadius: '0 0 10px 10px', padding: '22px 26px', marginTop: -1,
   },
 }

@@ -116,3 +116,22 @@ img { display: block; max-width: 100%; }
     position: static !important;
   }
 }
+
+/* Print stylesheet — used by the "Print itinerary" button on /concierge.
+   .no-print marks chrome (nav, footer, the input form) that shouldn't
+   appear on a printed page; the itinerary text is what's meant to print. */
+@media print {
+  header, footer, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  main {
+    padding: 0 !important;
+  }
+  a[href]::after {
+    content: '';
+  }
+}

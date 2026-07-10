@@ -36,7 +36,7 @@ export function requireAdmin(request, env) {
 }
 
 const VALID_VERIFY_STATUSES = ['verified', 'needs_update', 'closed_temp', 'closed_perm'];
-const VALID_VERIFY_SOURCES  = ['staff', 'community', 'partner', 'ai_vision'];
+const VALID_VERIFY_SOURCES  = ['staff', 'community', 'partner', 'ai_vision', 'ai_audit'];
 
 // Shared by the public /api/verify and password-gated /api/admin/verify endpoints.
 export async function insertVerification(env, body) {
@@ -62,6 +62,52 @@ export async function insertVerification(env, body) {
 
 export const CATEGORIES = ['toilet', 'hotel', 'restaurant', 'beach', 'transport', 'attraction', 'village', 'ferry'];
 export const DIVISIONS  = ['Western', 'Central', 'Northern', 'Eastern'];
+
+// Fire-and-forget AI severity classification for a newly posted alert.
+// Runs after the response is already on its way back to the client via
+// waitUntil (the property Cloudflare Pages Functions expose directly on
+// the request context — NOT nested under a "ctx" object), so posting an
+// alert never waits on this. Silently skips if ANTHROPIC_API_KEY isn't
+// configured or the call fails.
+export function scheduleAlertClassification(waitUntil, env, alertId, alertType, message) {
+  if (!env.ANTHROPIC_API_KEY) return;
+  waitUntil(classifyAndStoreAlert(env, alertId, alertType, message).catch(() => {}));
+}
+
+async function classifyAndStoreAlert(env, alertId, alertType, message) {
+  const prompt = `Classify the severity of this Fiji accessibility alert and estimate a resolution time.
+Alert type: ${alertType}
+Message: "${message}"
+
+Return JSON only, matching this exact shape:
+{"severity": "low"|"medium"|"high"|"critical", "resolution_estimate": "short human-readable estimate, e.g. 'Ramp repairs typically take 1-3 days'"}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 200,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  if (!res.ok) return;
+
+  const data = await res.json();
+  const text = data.content?.find(b => b.type === 'text')?.text || '';
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) return;
+
+  const parsed = JSON.parse(match[0]);
+  await env.DB
+    .prepare('UPDATE live_alerts SET ai_severity = ?, ai_resolution_estimate = ? WHERE id = ?')
+    .bind(parsed.severity || null, parsed.resolution_estimate || null, alertId)
+    .run();
+}
 
 // Haversine distance in km
 export function haversineKm(lat1, lng1, lat2, lng2) {
@@ -96,7 +142,12 @@ export const FACILITY_SELECT = `
     v.verifier_name,
     v.photo_urls,
     (SELECT COUNT(*) FROM live_alerts la
-      WHERE la.facility_id = f.id AND la.is_resolved = 0) AS active_alerts
+      WHERE la.facility_id = f.id AND la.is_resolved = 0) AS active_alerts,
+    (SELECT ai_severity FROM live_alerts la
+      WHERE la.facility_id = f.id AND la.is_resolved = 0 AND ai_severity IS NOT NULL
+      ORDER BY CASE ai_severity
+        WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'medium' THEN 3 WHEN 'low' THEN 4 ELSE 5 END
+      LIMIT 1) AS top_alert_severity
   FROM facilities f
   LEFT JOIN accessibility_features af ON af.facility_id = f.id
   LEFT JOIN verifications v ON v.id = (

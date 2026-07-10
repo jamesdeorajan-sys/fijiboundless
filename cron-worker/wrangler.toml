@@ -1,0 +1,27 @@
+# Standalone Worker for the monthly accessibility-data audit.
+#
+# Cloudflare Pages projects (see ../wrangler.toml) do not support Cron
+# Triggers — scheduled() handlers only run on plain Workers deployed via
+# `wrangler deploy`. This is that Worker: it shares the same D1 database as
+# the Pages project (same database_id) and reuses the one audit
+# implementation in ../functions/_audit.js, so there's a single source of
+# truth rather than duplicated logic.
+#
+# Deploy from this directory:
+#   cd cron-worker && npx wrangler deploy
+#
+# Trigger a manual test run without waiting for the schedule:
+#   npx wrangler dev --test-scheduled
+#   curl "http://localhost:8787/__scheduled?cron=0+2+1+*+*"
+
+name = "fijiboundless-cron"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[triggers]
+crons = ["0 2 1 * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "fijiboundless"
+database_id = "2071ab8c-f315-452e-92b3-547f1f1018e8"

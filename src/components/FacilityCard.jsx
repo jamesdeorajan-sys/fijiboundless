@@ -12,6 +12,8 @@ const CATEGORY_ICONS = {
   ferry:      '⛵',
 }
 
+const SEVERITY_COLORS = { low: '#C08A1A', medium: '#E65100', high: '#B71C1C', critical: '#7A0000' }
+
 const FEATURE_ICONS = [
   { key: 'step_free_entry',           label: 'Step-free entry',    icon: '♿' },
   { key: 'grab_rails',                label: 'Grab rails',          icon: '🤲' },
@@ -31,8 +33,18 @@ export default function FacilityCard({ facility }) {
   return (
     <Link to={`/facility/${facility.id}`} style={s.card}>
       {facility.active_alerts > 0 && (
-        <div style={s.alertBanner}>
+        <div style={{
+          ...s.alertBanner,
+          ...(facility.top_alert_severity ? {
+            background: SEVERITY_COLORS[facility.top_alert_severity] + '1A',
+            borderColor: SEVERITY_COLORS[facility.top_alert_severity],
+            color: SEVERITY_COLORS[facility.top_alert_severity],
+          } : {}),
+        }}>
           ⚠ {facility.active_alerts} active alert{facility.active_alerts > 1 ? 's' : ''}
+          {facility.top_alert_severity && (
+            <span style={s.severityTag}>{facility.top_alert_severity.toUpperCase()}</span>
+          )}
         </div>
       )}
 
@@ -90,6 +102,12 @@ const s = {
     fontSize: '0.78rem',
     color: '#E65100',
     fontWeight: 600,
+    display: 'flex', alignItems: 'center', gap: 6,
+  },
+  severityTag: {
+    marginLeft: 'auto', fontSize: '0.65rem', fontWeight: 800,
+    letterSpacing: '0.04em', padding: '1px 6px', borderRadius: 4,
+    background: 'rgba(0,0,0,0.08)',
   },
   top: { display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 },
   catIcon: { fontSize: '1.6rem', flexShrink: 0, marginTop: 2 },

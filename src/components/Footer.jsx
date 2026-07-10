@@ -27,6 +27,7 @@ export default function Footer() {
           </div>
           <div>
             <p style={s.colHead}>Community</p>
+            <Link to="/suggest" style={s.footLink}>Suggest a Place</Link>
             <a href="mailto:verify@fijiboundless.com" style={s.footLink}>Submit a Verification</a>
             <a href="mailto:alert@fijiboundless.com" style={s.footLink}>Report an Issue</a>
             <a href="mailto:hello@fijiboundless.com" style={s.footLink}>Contact Us</a>

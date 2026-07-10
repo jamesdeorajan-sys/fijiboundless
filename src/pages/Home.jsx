@@ -14,14 +14,19 @@ const DIVISIONS = ['Western', 'Central', 'Northern', 'Eastern']
 
 export default function Home() {
   const navigate = useNavigate()
-  const [alerts, setAlerts] = useState([])
-  const [cat, setCat]       = useState('')
-  const [div, setDiv]       = useState('')
+  const [alerts, setAlerts]       = useState([])
+  const [freshness, setFreshness] = useState(null)
+  const [cat, setCat]             = useState('')
+  const [div, setDiv]             = useState('')
 
   useEffect(() => {
     fetch('/api/alerts')
       .then(r => r.json())
       .then(d => setAlerts(d.active_alerts || []))
+      .catch(() => {})
+    fetch('/api/freshness-report')
+      .then(r => r.json())
+      .then(setFreshness)
       .catch(() => {})
   }, [])
 
@@ -108,6 +113,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Data health strip ── */}
+      {freshness && freshness.total_facilities > 0 && (
+        <DataHealthStrip freshness={freshness} />
+      )}
+
       {/* ── Category quick links ── */}
       <section style={s.section}>
         <div style={s.container}>
@@ -186,6 +196,27 @@ export default function Home() {
   )
 }
 
+function DataHealthStrip({ freshness }) {
+  const { total_facilities, verified_last_30_days, verified_30_90_days } = freshness
+  const fresh = verified_last_30_days + verified_30_90_days
+  const pct = Math.round((fresh / total_facilities) * 100)
+  const color = pct >= 80 ? '#2D6A4F' : pct >= 50 ? '#C08A1A' : '#C0392B'
+
+  return (
+    <div style={s.healthStrip}>
+      <div style={s.healthInner}>
+        <span style={s.healthLabel}>
+          Data health: <strong>{fresh} of {total_facilities}</strong> facilities verified in the last 90 days
+        </span>
+        <div style={s.healthBarTrack}>
+          <div style={{ ...s.healthBarFill, width: `${pct}%`, background: color }} />
+        </div>
+        <span style={{ ...s.healthPct, color }}>{pct}%</span>
+      </div>
+    </div>
+  )
+}
+
 const s = {
   ticker: {
     background: '#E8634A', color: '#FDFAF5',
@@ -194,6 +225,19 @@ const s = {
   },
   tickerLabel: { fontWeight: 700, background: 'rgba(0,0,0,0.2)', borderRadius: 4, padding: '1px 7px' },
   tickerMore: { marginLeft: 'auto', color: '#FDFAF5', fontWeight: 600, textDecoration: 'underline' },
+
+  healthStrip: { background: '#F5EDD6', borderBottom: '1px solid #D4C9B0', padding: '16px 24px' },
+  healthInner: {
+    maxWidth: 1200, margin: '0 auto',
+    display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+  },
+  healthLabel: { fontSize: '0.85rem', color: '#4A3F2F', flexShrink: 0 },
+  healthBarTrack: {
+    flex: 1, minWidth: 120, height: 8, borderRadius: 4,
+    background: '#EDE7D8', overflow: 'hidden',
+  },
+  healthBarFill: { height: '100%', borderRadius: 4, transition: 'width 300ms ease' },
+  healthPct: { fontSize: '0.85rem', fontWeight: 700, flexShrink: 0 },
 
   hero: {
     background: 'linear-gradient(135deg, #0D2B3E 0%, #0A3D50 60%, #0D4A3A 100%)',

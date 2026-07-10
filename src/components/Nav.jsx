@@ -1,9 +1,27 @@
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+const TOOLS = [
+  ['Doorway Check', '/tools/doorway-check'],
+  ['Score Calculator', '/tools/score-calculator'],
+]
 
 export default function Nav() {
   const { pathname } = useLocation()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]           = useState(false)
+  const [toolsOpen, setToolsOpen]  = useState(false)
+  const toolsRef = useRef(null)
+
+  useEffect(() => { setOpen(false); setToolsOpen(false) }, [pathname])
+
+  useEffect(() => {
+    if (!toolsOpen) return
+    const onClickOutside = e => { if (toolsRef.current && !toolsRef.current.contains(e.target)) setToolsOpen(false) }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [toolsOpen])
+
+  const toolsActive = pathname.startsWith('/tools')
 
   return (
     <header style={s.header}>
@@ -27,6 +45,26 @@ export default function Nav() {
           <Link to="/guides" style={{ ...s.link, ...(pathname.startsWith('/guides') ? s.active : {}) }}>
             Guides
           </Link>
+          <div ref={toolsRef} style={s.toolsWrap}>
+            <button
+              type="button"
+              style={{ ...s.link, ...s.toolsBtn, ...(toolsActive ? s.active : {}) }}
+              onClick={() => setToolsOpen(v => !v)}
+              aria-expanded={toolsOpen}
+              aria-haspopup="true"
+            >
+              Tools ▾
+            </button>
+            {toolsOpen && (
+              <div style={s.toolsMenu}>
+                {TOOLS.map(([label, href]) => (
+                  <Link key={href} to={href} style={s.toolsMenuLink} onClick={() => setToolsOpen(false)}>
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         <Link to="/search" className="nav-cta" style={s.cta}>Plan a Trip</Link>
@@ -52,6 +90,8 @@ export default function Nav() {
             ['Northern Fiji', '/search?division=Northern'],
             ['AI Concierge', '/concierge'],
             ['Guides', '/guides'],
+            ['Doorway Check', '/tools/doorway-check'],
+            ['Score Calculator', '/tools/score-calculator'],
           ].map(([label, href]) => (
             <Link key={href} to={href} style={s.mobileLink} onClick={() => setOpen(false)}>
               {label}
@@ -97,6 +137,21 @@ const s = {
     whiteSpace: 'nowrap',
   },
   active: { color: '#A8D5BA', background: 'rgba(168,213,186,0.1)' },
+  toolsWrap: { position: 'relative' },
+  toolsBtn: {
+    background: 'none', border: 'none', cursor: 'pointer', font: 'inherit',
+  },
+  toolsMenu: {
+    position: 'absolute', top: 'calc(100% + 6px)', left: 0, zIndex: 110,
+    background: '#0D2B3E', border: '1px solid rgba(168,213,186,0.2)',
+    borderRadius: 8, padding: 6, minWidth: 170,
+    boxShadow: '0 12px 32px rgba(0,0,0,0.35)',
+    display: 'flex', flexDirection: 'column', gap: 2,
+  },
+  toolsMenuLink: {
+    padding: '9px 12px', borderRadius: 6, fontSize: '0.86rem',
+    color: 'rgba(253,250,245,0.85)', whiteSpace: 'nowrap',
+  },
   cta: {
     marginLeft: 'auto',
     padding: '8px 20px',
