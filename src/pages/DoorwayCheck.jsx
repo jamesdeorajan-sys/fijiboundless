@@ -108,7 +108,7 @@ export default function DoorwayCheck() {
           <div style={s.result}>
             <h2 style={s.resultTitle}>Analysis</h2>
 
-            <div style={s.passRow}>
+            <div className="grid-responsive-2col" style={s.passRow}>
               <div style={{ ...s.passCard, borderColor: PASS_COLORS[result.manual_wheelchair_passable] || '#D4C9B0' }}>
                 <span style={s.passLabel}>Manual wheelchair</span>
                 <span style={{ ...s.passValue, color: PASS_COLORS[result.manual_wheelchair_passable] || '#7A6E60' }}>
@@ -207,7 +207,7 @@ const s = {
     borderRadius: 12, padding: '24px 26px',
   },
   resultTitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', color: '#0D2B3E', marginBottom: 20 },
-  passRow: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 20 },
+  passRow: { marginBottom: 20 },
   passCard: {
     border: '2px solid', borderRadius: 10, padding: '14px 16px',
     display: 'flex', flexDirection: 'column', gap: 6,

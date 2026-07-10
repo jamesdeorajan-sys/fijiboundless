@@ -122,7 +122,7 @@ export default function Concierge() {
 
       <div style={s.container}>
         <form onSubmit={handleSubmit} className="no-print" style={s.form}>
-          <div style={s.formGrid}>
+          <div className="grid-responsive-2col" style={s.formGrid}>
             <div style={s.field}>
               <label style={s.label}>Wheelchair type</label>
               <select value={wheelchairType} onChange={e => setWheelchairType(e.target.value)} style={s.select}>
@@ -281,7 +281,7 @@ const s = {
     padding: '28px 26px', display: 'flex', flexDirection: 'column', gap: 22,
   },
   formGrid: {
-    display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, alignItems: 'end',
+    alignItems: 'end',
   },
   field: { display: 'flex', flexDirection: 'column', gap: 8 },
   label: {

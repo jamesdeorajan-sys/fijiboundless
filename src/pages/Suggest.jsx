@@ -69,7 +69,7 @@ export default function Suggest() {
             />
           </div>
 
-          <div style={s.grid2}>
+          <div className="grid-responsive-2col">
             <div style={s.field}>
               <label style={s.label}>Address (optional)</label>
               <input style={s.input} value={form.address} onChange={e => set('address', e.target.value)} />
@@ -135,7 +135,6 @@ const s = {
     background: '#F5EDD6', border: '1px solid #D4C9B0', borderRadius: 14,
     padding: '28px 26px', display: 'flex', flexDirection: 'column', gap: 18,
   },
-  grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 },
   field: { display: 'flex', flexDirection: 'column', gap: 8 },
   label: {
     fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em',

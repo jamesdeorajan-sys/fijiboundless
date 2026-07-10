@@ -45,6 +45,9 @@ export default function Nav() {
           <Link to="/guides" style={{ ...s.link, ...(pathname.startsWith('/guides') ? s.active : {}) }}>
             Guides
           </Link>
+          <Link to="/about" style={{ ...s.link, ...(pathname === '/about' ? s.active : {}) }}>
+            About
+          </Link>
           <div ref={toolsRef} style={s.toolsWrap}>
             <button
               type="button"
@@ -90,6 +93,7 @@ export default function Nav() {
             ['Northern Fiji', '/search?division=Northern'],
             ['AI Concierge', '/concierge'],
             ['Guides', '/guides'],
+            ['About', '/about'],
             ['Doorway Check', '/tools/doorway-check'],
             ['Score Calculator', '/tools/score-calculator'],
           ].map(([label, href]) => (
@@ -126,7 +130,7 @@ const s = {
     fontWeight: 700, fontSize: '1.15rem',
     color: '#FDFAF5', letterSpacing: '0.02em',
   },
-  nav: { gap: 4, flex: 1 },
+  nav: { gap: 4, flex: 1, flexWrap: 'wrap', rowGap: 6 },
   link: {
     padding: '6px 14px',
     borderRadius: 6,

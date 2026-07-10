@@ -117,6 +117,55 @@ img { display: block; max-width: 100%; }
   }
 }
 
+/* Reusable responsive 2-column grid — inline styles can't express media
+   queries, so any form/layout that needs "two columns on desktop, one on
+   mobile" uses this class instead of a raw gridTemplateColumns: '1fr 1fr'
+   inline style, which forces horizontal overflow on narrow viewports. */
+.grid-responsive-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 640px) {
+  .grid-responsive-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home hero: text column + fixed-width stat grid column. */
+.home-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 64px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .home-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Search page: fixed-width filter sidebar + flexible results column. */
+.search-page-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .search-page-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .search-sidebar {
+    position: static !important;
+  }
+}
+
 /* Print stylesheet — used by the "Print itinerary" button on /concierge.
    .no-print marks chrome (nav, footer, the input form) that shouldn't
    appear on a printed page; the itinerary text is what's meant to print. */

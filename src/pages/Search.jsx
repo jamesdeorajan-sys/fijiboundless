@@ -64,9 +64,9 @@ export default function Search() {
   }
 
   return (
-    <div style={s.page}>
+    <div className="search-page-grid" style={s.page}>
       {/* ── Sidebar filters ── */}
-      <aside style={s.sidebar}>
+      <aside className="search-sidebar" style={s.sidebar}>
         <h2 style={s.filterHead}>Filter</h2>
 
         <div style={s.filterGroup}>
@@ -163,9 +163,6 @@ const s = {
   page: {
     maxWidth: 1200, margin: '0 auto',
     padding: '40px 24px',
-    display: 'grid',
-    gridTemplateColumns: '220px 1fr',
-    gap: 40, alignItems: 'start',
   },
   sidebar: {
     position: 'sticky', top: 84,

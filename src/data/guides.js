@@ -334,6 +334,143 @@ export const GUIDES = [
     ],
     searchLink: '/search?category=toilet&division=Western',
   },
+  {
+    slug: 'fiji-accessible-transport',
+    title: 'Accessible Transport in Fiji: The Complete 2026 Guide | FijiBoundless',
+    description: 'Everything on accessible transport in Fiji — the only wheelchair-lift vehicle in the country, airport assistance, ferry realities, and what to pre-book before you land.',
+    h1: 'Accessible Transport in Fiji: The Complete 2026 Guide',
+    intro: [
+      "Ground transport is the single biggest planning gap for wheelchair users visiting Fiji, and it's worth knowing the honest picture before you arrive: as far as our research has identified, Tourist Transport Fiji (TTF) operates the only wheelchair-lift vehicle in the country — a Toyota van fitted with a Braun 250kg lift, based at Port Denarau and serving all major hotels plus the cruise ship wharf. It's a single unit rather than a fleet, so book it well ahead of arrival rather than assuming availability on short notice.",
+      "Rosie Holidays runs a broader accessible vehicle fleet for airport transfers and island tours, which is worth confirming as a second option alongside TTF, particularly if your dates don't line up with TTF's van. Outside of these two operators, standard taxis and resort shuttles in Fiji are rarely wheelchair accessible, so don't plan around finding one on arrival.",
+      "At Nadi International Airport, aircraft boarding assistance (ambulift or aisle chair) is arranged through your airline rather than through ground transport operators — request it at booking or at least 48 hours ahead. Inter-island transport is a different picture again: ferries and catamarans board via crew-assisted manual lifting rather than a mechanical lift, and gangway conditions are tide-dependent at floating-pontoon terminals like Port Denarau. Power wheelchair users should confirm chair weight and dimensions with any operator, whether it's a road transfer or a boat, well before travel — this is the detail most likely to cause a booking to fall through at the last minute.",
+    ],
+    faqs: [
+      {
+        q: 'Is there a wheelchair accessible taxi in Fiji?',
+        a: "Not in the way you might expect from other countries. Standard taxis in Fiji are not wheelchair accessible. Tourist Transport Fiji (TTF) operates the only wheelchair-lift vehicle we've identified, and Rosie Holidays runs an accessible vehicle fleet — both need to be pre-booked rather than hailed.",
+      },
+      {
+        q: 'Can I get a wheelchair lift vehicle from Nadi airport?',
+        a: "Yes — Tourist Transport Fiji's lift-equipped van is based at Port Denarau and serves Nadi Airport transfers, along with major hotels and the cruise wharf. Book ahead, since it's a single vehicle rather than a fleet.",
+      },
+      {
+        q: 'How do I book accessible transport between islands?',
+        a: "Inter-island transport is by boat or small aircraft rather than road vehicle, so 'accessible transport' there means confirming assisted boarding with the ferry or airline directly. Neither TTF nor Rosie Holidays operate boats themselves — they're for transfers on Viti Levu.",
+      },
+      {
+        q: 'Are Fiji ferries wheelchair accessible?',
+        a: 'Generally via crew-assisted manual boarding rather than a mechanical lift or ramp. Gangway conditions at floating-pontoon terminals change with the tide. See our dedicated ferry accessibility guide for terminal-by-terminal detail.',
+      },
+      {
+        q: 'What transport is available for power wheelchair users?',
+        a: "The same operators — TTF and Rosie Holidays — but confirm your chair's weight and dimensions when booking, since vehicle lifts and ramps have real capacity limits. For inter-island travel, declare weight and battery type to the ferry or airline in advance.",
+      },
+    ],
+    facilityQueries: [
+      { label: 'Accessible transport operators', params: { category: 'transport' } },
+    ],
+    searchLink: '/search?category=transport',
+  },
+  {
+    slug: 'coral-coast-accessibility',
+    title: 'Coral Coast Fiji Accessibility Guide 2026 | FijiBoundless',
+    description: 'The Coral Coast accessibility guide: Shangri-La Yanuca Island, InterContinental Natadola, The Warwick Fiji, and Natadola Beach — what to expect and how far it is from Nadi.',
+    h1: 'Coral Coast Fiji Accessibility Guide 2026',
+    intro: [
+      "The Coral Coast — the stretch of Queens Road running southeast from Nadi through Sigatoka and Korolevu — is home to some of Fiji's best-documented accessible resorts, and it's a genuinely different experience from Denarau: fewer resorts, a longer drive, but in places a noticeably higher standard of accessible infrastructure.",
+      "Shangri-La Yanuca Island Fiji is the standout: every room is wheelchair accessible with walk-in showers, ramps are built into every wing rather than added afterward, a dedicated beach wheelchair is kept on site, and the resort is connected to the mainland by a causeway — no boat transfer required, which removes a variable that complicates so many other island properties. Further along, InterContinental Fiji Golf Resort & Spa at Natadola Bay has level concrete pathways throughout the grounds, ramps built in alongside every staircase, and lifts to the lobby and main restaurant. The Warwick Fiji offers a more modest but still genuine option: two accessible Garden View rooms on the ground floor near the lift, with walk-in showers and support railings.",
+      "Natadola Beach itself, a short distance from the InterContinental, is consistently cited as Fiji's most accessible public beach, with a maintained pathway from the car park down to the sand. The Coral Coast is roughly 45–90 minutes' drive from Nadi International Airport depending on exactly where you're headed — Sigatoka and Natadola are the closer end, Korolevu further on — so factor that into transfer planning, especially if you're booking through Tourist Transport Fiji or Rosie Holidays.",
+    ],
+    faqs: [
+      {
+        q: 'What is the most accessible resort on the Coral Coast?',
+        a: 'Shangri-La Yanuca Island Fiji, by a clear margin in the research we\'ve reviewed — every room is wheelchair accessible, with ramps built into every wing and a dedicated beach wheelchair, and it\'s reached by causeway rather than boat.',
+      },
+      {
+        q: 'Is Natadola Beach wheelchair accessible?',
+        a: "Yes — it's specifically documented as having a maintained accessible pathway from the car park to the sand, and is widely cited as Fiji's most accessible public beach.",
+      },
+      {
+        q: 'How far is the Coral Coast from Nadi airport?',
+        a: "Roughly 45–90 minutes by road depending on the exact resort — Sigatoka and Natadola are the closer end of the Coral Coast, Korolevu and beyond are further. Factor this into any pre-booked accessible transfer.",
+      },
+      {
+        q: 'Which Coral Coast resorts have beach wheelchairs?',
+        a: 'Shangri-La Yanuca Island keeps a dedicated beach wheelchair on site, and InterContinental Natadola Bay also has beach wheelchairs available on request. Confirm current availability directly before you travel.',
+      },
+    ],
+    facilityQueries: [
+      { label: 'Coral Coast hotels', params: { category: 'hotel', division: 'Western' }, clientFilter: f => ['Coral Coast', 'Natadola'].includes(f.town_or_area) || f.island === 'Yanuca Island' },
+      { label: 'Beaches', params: { category: 'beach', division: 'Western' }, clientFilter: f => f.town_or_area === 'Natadola' },
+    ],
+    searchLink: '/search?division=Western&category=hotel',
+  },
+  {
+    slug: 'accessible-resorts-mamanuca-islands',
+    title: 'Accessible Resorts in the Mamanuca Islands: 2026 Guide | FijiBoundless',
+    description: 'Which Mamanuca Islands resorts are genuinely accessible — VOMO, Plantation Island, Likuliku, and Castaway Island — and what boat transfer involves for wheelchair users.',
+    h1: 'Accessible Resorts in the Mamanuca Islands',
+    intro: [
+      "The Mamanuca Islands are Fiji's classic postcard resort chain, and nearly every one of them is reached the same way regardless of budget: a fast catamaran from Port Denarau, or in some cases a scenic seaplane transfer. Both involve a level of assisted, non-mechanical boarding that's worth planning around rather than being surprised by — catamarans use gangway boarding with crew assistance rather than a ramp or lift, and seaplane transfers involve being carried or assisted onto a floating dock and then the aircraft itself.",
+      "Within that shared logistics picture, accessibility on the ground varies a lot by resort. VOMO Island Fiji reopened in April 2026 after a full renovation, which is worth knowing since post-renovation properties sometimes have upgraded accessible pathways not yet reflected in older reviews. Plantation Island Resort was still working toward a late-2026 reopening as of our last research pass, so treat any accessibility claims there as provisional until it's confirmed open again. Likuliku Lagoon Resort completed a multi-million dollar upgrade with an adults-only, overwater-and-beachfront layout — boat transfer from Denarau applies here as with the others. Castaway Island Fiji is a longer-established Mamanuca property with resort buggies on sand paths rather than fully step-free grounds.",
+      "The practical takeaway: before booking any Mamanuca resort, ask specifically how the boat or seaplane transfer will handle your mobility equipment, whether crew can lift you and your chair safely, and what happens if conditions are too rough on the day. This is the single most important question for this island group — resort-side accessibility is often good, but the transfer is the part most travellers underestimate.",
+    ],
+    faqs: [
+      {
+        q: 'Can wheelchair users visit the Mamanuca Islands?',
+        a: "Yes, but transfer logistics matter more here than at any mainland resort. Boarding a catamaran or seaplane involves assisted, non-mechanical boarding — plan around that rather than assuming a ramp or lift will be available.",
+      },
+      {
+        q: 'Is the South Sea Cruises catamaran wheelchair accessible?',
+        a: "Boarding is via gangway with crew assistance rather than a dedicated wheelchair ramp or lift. Gangway gradient depends on tide and terminal — see our Port Denarau and ferry accessibility guides for more detail.",
+      },
+      {
+        q: 'Which Mamanuca resort is best for mobility needs?',
+        a: 'Based on available research, Likuliku Lagoon Resort and the newly renovated VOMO Island Fiji are the strongest current options, though always reconfirm specifics directly with the resort before booking, since accessibility features can change with renovations.',
+      },
+      {
+        q: 'Can I take a power wheelchair on a Fiji ferry?',
+        a: "Most operators can carry a power wheelchair as stowed equipment, but declare its weight, dimensions, and battery type well in advance — this is the detail most likely to cause a problem on the day if it's left unconfirmed.",
+      },
+    ],
+    facilityQueries: [
+      { label: 'Mamanuca Islands resorts', params: { category: 'hotel', division: 'Western' }, clientFilter: f => f.town_or_area === 'Mamanuca Group' },
+    ],
+    searchLink: '/search?division=Western&category=hotel',
+  },
+  {
+    slug: 'suva-accessibility-guide',
+    title: "Suva Accessibility Guide: Fiji's Capital for All Travellers | FijiBoundless",
+    description: "An accessibility guide to Suva, Fiji's capital — the Fiji Museum's ramps and audio guides, Holiday Inn Suva, Albert Park, and getting into the city from either airport.",
+    h1: "Suva Accessibility Guide: Fiji's Capital for All Travellers",
+    intro: [
+      "Suva is a working capital city rather than a resort strip, and that changes the accessibility picture: footpaths, kerb cuts, and building access vary block by block in a way they don't on a purpose-built resort island. The good news is that the city's standout cultural attraction is also its most accessible: the Fiji Museum, set in the quiet grounds of Thurston Gardens, is the only major cultural attraction in Fiji with confirmed ramp access and audio guides for vision-impaired visitors — a genuinely rare combination in the region.",
+      "Holiday Inn Suva sits centrally on Victoria Parade with confirmed accessible rooms and lift access to all floors, making it a practical base for exploring the city centre, Albert Park, and the waterfront without needing a vehicle for every trip. Suva's municipal market and older government buildings are far more mixed — narrow aisles, uneven older flooring, and inconsistent ramp provision are common, so treat those as places to visit with an assisted plan rather than assuming independent access.",
+      "Getting to Suva depends on where you're arriving from: Nausori Airport, about 45 minutes northeast of the city, handles most domestic flights into the capital, while travellers connecting from Nadi International Airport face a genuinely long road transfer of three to four hours down the Queens or Kings Road. For a short Suva visit, flying into Nausori is usually the more manageable option; for a longer Fiji itinerary that includes Suva as one stop among several, factor the drive time into your accessible transport booking well ahead.",
+    ],
+    faqs: [
+      {
+        q: 'Is Suva accessible for wheelchair users?',
+        a: "Partially, and it varies block by block — Suva is a working city rather than a purpose-built resort area. Central spots like the Fiji Museum and Holiday Inn Suva are confirmed accessible; older government buildings and the municipal market are far more mixed.",
+      },
+      {
+        q: 'What is the most accessible attraction in Suva?',
+        a: 'The Fiji Museum in Thurston Gardens — the only major cultural attraction in Fiji with confirmed ramp access and audio guides for vision-impaired visitors, in a quiet, low-noise setting.',
+      },
+      {
+        q: 'Is Nausori Airport accessible?',
+        a: "Nausori handles most domestic flights into Suva and is the more practical arrival point for a Suva-focused visit compared to the three-to-four-hour road transfer from Nadi International Airport. Confirm ground assistance directly with your domestic carrier when booking.",
+      },
+      {
+        q: 'Are there accessible restaurants in Suva city centre?',
+        a: 'A handful of central options report step-free entry, though provision is inconsistent across the city. Check individual facility listings for current verification status before relying on any single venue.',
+      },
+    ],
+    facilityQueries: [
+      { label: 'Suva facilities', params: { division: 'Central' }, clientFilter: f => f.town_or_area === 'Suva' },
+    ],
+    searchLink: '/search?division=Central',
+  },
 ]
 
 export function getGuide(slug) {

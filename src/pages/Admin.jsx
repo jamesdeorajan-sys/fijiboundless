@@ -144,7 +144,7 @@ function AddFacilityForm({ adminPost, onCreated }) {
   return (
     <Panel title="1. Add a new facility">
       <form onSubmit={submit} style={s.form}>
-        <div style={s.grid2}>
+        <div className="grid-responsive-2col">
           <input style={s.input} placeholder="Name" value={form.name} onChange={e => set('name', e.target.value)} required />
           <select style={s.input} value={form.category} onChange={e => set('category', e.target.value)}>
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
@@ -206,7 +206,7 @@ function AccessibilityFeaturesForm({ adminPost, facilities }) {
           ))}
         </div>
 
-        <div style={s.grid2}>
+        <div className="grid-responsive-2col">
           <input style={s.input} placeholder="Ramp gradient %" value={other.ramp_gradient_percent} onChange={e => setOther(o => ({ ...o, ramp_gradient_percent: e.target.value }))} />
           <input style={s.input} placeholder="Door width (cm)" value={other.door_width_cm} onChange={e => setOther(o => ({ ...o, door_width_cm: e.target.value }))} />
           <input style={s.input} placeholder="Turning circle (cm)" value={other.turning_circle_cm} onChange={e => setOther(o => ({ ...o, turning_circle_cm: e.target.value }))} />
@@ -245,7 +245,7 @@ function VerificationForm({ adminPost, facilities }) {
   return (
     <Panel title="3. Submit a verification">
       <form onSubmit={submit} style={s.form}>
-        <div style={s.grid2}>
+        <div className="grid-responsive-2col">
           <select style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
             <option value="">Select facility…</option>
             {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
@@ -288,7 +288,7 @@ function AlertForm({ adminPost, facilities, onCreated }) {
   return (
     <Panel title="4. Post a live alert">
       <form onSubmit={submit} style={s.form}>
-        <div style={s.grid2}>
+        <div className="grid-responsive-2col">
           <select style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
             <option value="">Select facility…</option>
             {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
@@ -442,7 +442,6 @@ const s = {
   panelTitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', color: '#0D2B3E', marginBottom: 18 },
 
   form: { display: 'flex', flexDirection: 'column', gap: 14 },
-  grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 },
   input: {
     padding: '10px 12px', background: '#FDFAF5', border: '1px solid #D4C9B0',
     borderRadius: 7, fontSize: '0.88rem', color: '#1A1208',

@@ -22,7 +22,7 @@ export default function Guide({ slug }) {
   useSEO({
     title: guide?.title,
     description: guide?.description,
-    faqJsonLd,
+    jsonLd: faqJsonLd,
   })
 
   useEffect(() => {

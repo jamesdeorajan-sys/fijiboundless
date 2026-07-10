@@ -14,6 +14,8 @@ import DoorwayCheck from './pages/DoorwayCheck.jsx'
 import ScoreCalculator from './pages/ScoreCalculator.jsx'
 import Suggest from './pages/Suggest.jsx'
 import NotFound from './pages/NotFound.jsx'
+import About from './pages/About.jsx'
+import Partner from './pages/Partner.jsx'
 
 export default function App() {
   return (
@@ -33,6 +35,8 @@ export default function App() {
           <Route path="/tools/doorway-check"     element={<DoorwayCheck />} />
           <Route path="/tools/score-calculator"  element={<ScoreCalculator />} />
           <Route path="/suggest"                 element={<Suggest />} />
+          <Route path="/about"                   element={<About />} />
+          <Route path="/partner"                 element={<Partner />} />
           <Route path="*"                        element={<NotFound />} />
         </Routes>
       </main>

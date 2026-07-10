@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSEO } from '../hooks/useSEO.js'
+
+const ORGANIZATION_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'FijiBoundless',
+  url: 'https://fijiboundless.pages.dev',
+  description: 'Verified accessibility guide to Fiji',
+  areaServed: 'Fiji',
+}
 
 const CATEGORIES = [
   { value: 'toilet',     label: 'Accessible Toilets', icon: '🚻' },
@@ -18,6 +28,8 @@ export default function Home() {
   const [freshness, setFreshness] = useState(null)
   const [cat, setCat]             = useState('')
   const [div, setDiv]             = useState('')
+
+  useSEO({ jsonLd: ORGANIZATION_JSON_LD })
 
   useEffect(() => {
     fetch('/api/alerts')
@@ -53,7 +65,7 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section style={s.hero}>
-        <div style={s.heroInner}>
+        <div className="home-hero-inner" style={s.heroInner}>
           <div style={s.heroText}>
             <div style={s.eyebrow}>
               <span style={s.liveDot} />
@@ -97,7 +109,7 @@ export default function Home() {
           </div>
 
           {/* Hero stat cards */}
-          <div style={s.statGrid}>
+          <div className="grid-responsive-2col" style={s.statGrid}>
             {[
               { n: '7+',   label: 'Islands covered' },
               { n: '30+',  label: 'Accessibility data points' },
@@ -246,8 +258,6 @@ const s = {
   },
   heroInner: {
     maxWidth: 1200, margin: '0 auto',
-    display: 'grid', gridTemplateColumns: '1fr 280px',
-    gap: 64, alignItems: 'center',
   },
   heroText: {},
   eyebrow: {
@@ -290,7 +300,7 @@ const s = {
     fontSize: '0.95rem', fontWeight: 700,
     transition: 'background 200ms',
   },
-  statGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 },
+  statGrid: {},
   statCard: {
     background: 'rgba(168,213,186,0.08)',
     border: '1px solid rgba(168,213,186,0.2)',
