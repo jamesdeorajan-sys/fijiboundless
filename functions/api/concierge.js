@@ -1,4 +1,4 @@
-import { json, err, cors, CATEGORIES, DIVISIONS, FACILITY_SELECT } from '../_shared.js';
+import { json, err, cors, checkRateLimit, CATEGORIES, DIVISIONS, FACILITY_SELECT } from '../_shared.js';
 
 export async function onRequestOptions() { return cors(); }
 
@@ -25,6 +25,11 @@ function scoreFacility(f, needs) {
 export async function onRequestPost({ request, env }) {
   if (!env.ANTHROPIC_API_KEY) {
     return err('AI concierge is not configured (missing ANTHROPIC_API_KEY)', 500);
+  }
+
+  const { allowed } = await checkRateLimit(env, request, 'concierge', { maxRequests: 8, windowMinutes: 60 });
+  if (!allowed) {
+    return err('Too many itinerary requests from this location — please wait a while before trying again.', 429);
   }
 
   let body;

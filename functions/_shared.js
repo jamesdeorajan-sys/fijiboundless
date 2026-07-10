@@ -15,6 +15,26 @@ export function err(message, status = 400) {
   return json({ error: message }, status);
 }
 
+// Simple D1-backed per-IP rate limiter for expensive endpoints (e.g. an AI
+// call). Checks the request count in the trailing window BEFORE logging
+// this request, so a client already over the limit doesn't keep growing
+// the log table with rejected attempts.
+export async function checkRateLimit(env, request, endpoint, { maxRequests, windowMinutes }) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+
+  const row = await env.DB.prepare(
+    `SELECT COUNT(*) AS count FROM rate_limit_log WHERE ip = ? AND endpoint = ? AND requested_at > datetime('now', ?)`
+  ).bind(ip, endpoint, `-${windowMinutes} minutes`).first();
+
+  if (row.count >= maxRequests) return { allowed: false };
+
+  await env.DB.prepare(
+    'INSERT INTO rate_limit_log (ip, endpoint) VALUES (?, ?)'
+  ).bind(ip, endpoint).run();
+
+  return { allowed: true };
+}
+
 export function cors() {
   return new Response(null, {
     headers: {

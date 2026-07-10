@@ -99,8 +99,9 @@ export default function ScoreCalculator() {
 
       <div style={s.container}>
         <div style={s.panel}>
-          <label style={s.label}>Facility</label>
+          <label style={s.label} htmlFor="sc-facility">Facility</label>
           <select
+            id="sc-facility"
             value={facilityId} onChange={e => setFacilityId(e.target.value)}
             style={s.select} disabled={loading}
           >
@@ -110,22 +111,24 @@ export default function ScoreCalculator() {
             ))}
           </select>
 
-          <label style={{ ...s.label, marginTop: 20 }}>Your accessibility needs</label>
-          <div style={s.needsGrid}>
-            {NEEDS.map(n => (
-              <label key={n.key} style={s.needLabel}>
-                <input
-                  type="checkbox"
-                  checked={!!needs[n.key]}
-                  onChange={e => setNeeds(v => ({ ...v, [n.key]: e.target.checked }))}
-                />
-                <span>
-                  {n.label}
-                  {n.sublabel && <span style={s.needSub}> ({n.sublabel})</span>}
-                </span>
-              </label>
-            ))}
-          </div>
+          <fieldset style={{ ...s.fieldset, marginTop: 20 }}>
+            <legend style={s.label}>Your accessibility needs</legend>
+            <div style={s.needsGrid}>
+              {NEEDS.map(n => (
+                <label key={n.key} style={s.needLabel}>
+                  <input
+                    type="checkbox"
+                    checked={!!needs[n.key]}
+                    onChange={e => setNeeds(v => ({ ...v, [n.key]: e.target.checked }))}
+                  />
+                  <span>
+                    {n.label}
+                    {n.sublabel && <span style={s.needSub}> ({n.sublabel})</span>}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
         </div>
 
         {facilityId && selectedNeeds.length === 0 && (
@@ -196,6 +199,7 @@ const s = {
     display: 'block', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em',
     textTransform: 'uppercase', color: '#4A3F2F', marginBottom: 8,
   },
+  fieldset: { border: 'none', padding: 0, margin: 0 },
   select: {
     width: '100%', padding: '10px 12px', background: '#FDFAF5', border: '1px solid #D4C9B0',
     borderRadius: 7, fontSize: '0.9rem', color: '#1A1208',

@@ -82,15 +82,15 @@ export default function DoorwayCheck() {
       <div style={s.container}>
         <form onSubmit={submit} style={s.form}>
           <div style={s.field}>
-            <label style={s.label}>What are you photographing?</label>
-            <select value={subjectType} onChange={e => setSubjectType(e.target.value)} style={s.select}>
+            <label style={s.label} htmlFor="dc-subject">What are you photographing?</label>
+            <select id="dc-subject" value={subjectType} onChange={e => setSubjectType(e.target.value)} style={s.select}>
               {SUBJECT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
 
           <div style={s.field}>
-            <label style={s.label}>Photo</label>
-            <input type="file" accept="image/*" onChange={handleFile} style={s.fileInput} />
+            <label style={s.label} htmlFor="dc-photo">Photo</label>
+            <input id="dc-photo" type="file" accept="image/*" onChange={handleFile} style={s.fileInput} />
           </div>
 
           {preview && (

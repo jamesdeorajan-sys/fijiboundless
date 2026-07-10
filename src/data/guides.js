@@ -471,6 +471,103 @@ export const GUIDES = [
     ],
     searchLink: '/search?division=Central',
   },
+  {
+    slug: 'fiji-airways-accessibility',
+    title: 'Fiji Airways Accessibility Guide 2026 | FijiBoundless',
+    description: 'Flying Fiji Airways with a disability — wheelchair assistance booking, aisle chairs, seating requests, mobility equipment, and service animals.',
+    h1: 'Fiji Airways Accessibility Guide',
+    intro: [
+      "Fiji Airways is the national carrier and the airline most travellers use to reach Nadi, whether flying in from Los Angeles, Sydney, Auckland, or connecting onward to Suva, Savusavu, or Taveuni. Requesting wheelchair assistance is done through the airline directly rather than through any third party — at booking, through the \"special assistance\" option in manage-my-booking, or by phone. The general rule across most airlines including Fiji Airways is to request at least 48 hours before departure, though earlier is always safer for anything beyond basic assistance.",
+      "On the aircraft itself, an aisle chair is used to transfer passengers who can't walk to their seat, since standard wheelchairs don't fit down the aisle of any commercial aircraft. If you use a power wheelchair, it typically travels as checked mobility equipment in the cargo hold — declare the battery type (spillable, non-spillable, or lithium) when booking, since this affects handling requirements and occasionally requires advance notice for the specific aircraft type. Domestic legs to Savusavu, Taveuni, or Suva often use smaller aircraft (ATR turboprops), which have tighter aisle and door dimensions than the international 737/A350 fleet — worth confirming assistance separately for each leg of a multi-flight itinerary rather than assuming it carries over automatically.",
+      "Seating requests for extra legroom or specific rows suited to a transfer are best made directly with the airline rather than through a general online travel agent, since agent-booked tickets sometimes don't carry special-assistance flags through to the airline's own systems. Service animals are generally accepted with the correct documentation arranged in advance — check Fiji's biosecurity import requirements for animals separately, since these apply regardless of the animal's working status.",
+    ],
+    faqs: [
+      {
+        q: 'How do I request wheelchair assistance with Fiji Airways?',
+        a: "Request it through the airline directly — via the special assistance option when booking, through manage-my-booking, or by phone — at least 48 hours before departure. If you booked through a travel agent, it's worth confirming the request actually reached the airline's own system.",
+      },
+      {
+        q: 'Can I bring my own wheelchair on Fiji Airways?',
+        a: 'Yes. Manual wheelchairs are commonly accepted as checked mobility equipment at no extra charge; power wheelchairs need the battery type declared at booking (spillable, non-spillable, or lithium) since this affects handling.',
+      },
+      {
+        q: 'Does Fiji Airways allow service animals?',
+        a: "Generally yes with correct documentation arranged in advance, but check Fiji's biosecurity import requirements for animals separately — these apply regardless of the animal's working status.",
+      },
+      {
+        q: 'What seating options exist for reduced mobility?',
+        a: "Extra-legroom or aisle-adjacent seating suited to a transfer can be requested directly with the airline. Domestic legs on smaller ATR aircraft have tighter dimensions than international flights, so confirm assistance separately for each leg of a multi-flight itinerary.",
+      },
+    ],
+    facilityQueries: [
+      { label: 'Ground transport after landing', params: { category: 'transport' } },
+    ],
+    searchLink: '/search?category=transport',
+  },
+  {
+    slug: 'fiji-cruise-ship-accessibility',
+    title: 'Cruise Ship Accessibility in Fiji: Port & Tender Guide 2026 | FijiBoundless',
+    description: 'Which Fiji cruise ports allow direct ship-to-shore access and which require a tender boat — the single biggest accessibility factor for cruise passengers.',
+    h1: 'Cruise Ship Accessibility in Fiji: Port & Tender Guide',
+    intro: [
+      "The single biggest accessibility factor for a Fiji cruise call isn't the destination itself — it's whether the ship can dock directly at a wharf or has to anchor offshore and ferry passengers in on tender boats. Deep-water ports like Suva and Lautoka allow direct berth alongside a wharf, meaning passengers can walk or wheel straight off the ship onto solid ground — by far the more manageable option for wheelchair users and anyone with limited mobility.",
+      "Smaller island stops common on South Pacific itineraries — places like Dravuni Island or other Lau and Yasawa group anchorages — typically require a tender: a small boat that ferries passengers from the ship to shore, often involving steps down from the ship's platform and an assisted transfer into a rocking tender that can't accommodate a wheelchair in most cases. This is worth treating as a hard constraint rather than a minor inconvenience — some passengers with mobility equipment choose to stay aboard on tender days rather than attempt the transfer, which is a completely reasonable call.",
+      "Cruise lines have dedicated accessibility or special-needs desks and strongly prefer advance notice — ideally at booking, and again a few weeks before departure — so they can flag which excursions and ports are genuinely workable for your specific equipment and needs. Shore excursions booked through the cruise line usually list accessibility information more reliably than independently-booked local tours, though neither should be taken as a guarantee without a direct call to confirm.",
+    ],
+    faqs: [
+      {
+        q: 'Do Fiji cruise ports have wheelchair accessible tenders?',
+        a: "Generally no — tender boats used at anchorage ports typically can't accommodate a wheelchair, and the transfer involves steps and an assisted boarding into a small, moving boat. This is the main reason to check each port's docking type before booking.",
+      },
+      {
+        q: 'Which Fiji ports allow direct ship-to-shore access?',
+        a: 'Suva and Lautoka are deep-water ports that allow direct berth alongside a wharf, letting passengers disembark without a tender. Smaller island stops on South Pacific itineraries usually require tenders instead.',
+      },
+      {
+        q: 'How do I arrange accessible shore excursions in Fiji?',
+        a: "Book through the cruise line's own excursion desk where possible — their listings tend to carry more reliable accessibility detail than independently-booked local tours — and confirm specifics directly rather than relying on a general description.",
+      },
+      {
+        q: 'Should I contact the cruise line before booking a Fiji itinerary?',
+        a: "Yes. Cruise lines have dedicated accessibility desks and prefer advance notice, ideally at booking and again a few weeks before departure, so they can flag which specific ports and excursions are workable for your equipment and needs.",
+      },
+    ],
+    facilityQueries: [
+      { label: 'Ferry & marina access points', params: { category: 'ferry' } },
+    ],
+    searchLink: '/search?category=ferry',
+  },
+  {
+    slug: 'fiji-travel-insurance-disability',
+    title: 'Travel Insurance for Disabled Travellers to Fiji | FijiBoundless',
+    description: "What disabled travellers need to know about Fiji travel insurance — declaring pre-existing conditions, mobility equipment cover, and medical evacuation for outer islands.",
+    h1: 'Travel Insurance for Disabled Travellers to Fiji',
+    intro: [
+      "Travel insurance is worth planning as carefully as flights and accommodation when travelling to Fiji with a disability, and the details matter more here than in many destinations because of how spread out and remote parts of the country are. The first, most important step is declaring any pre-existing condition honestly at the time of buying the policy — insurers can and do decline claims where a condition wasn't disclosed, even if the actual claim is unrelated to it, so this isn't a step worth skipping to save on premium.",
+      "Mobility equipment cover is a separate and often underestimated detail. Many standard travel policies cap 'baggage' claims at a level that wouldn't come close to replacing a wheelchair, and some explicitly exclude mobility aids from standard baggage cover altogether, treating them instead as 'assistive devices' requiring a specific rider or higher declared value. If your policy doesn't clearly address this, it's worth a call to the insurer before you travel, not after something breaks in transit.",
+      "Medical evacuation cover deserves particular attention for a Fiji trip specifically. Suva and Lautoka have Fiji's main hospitals with the most comprehensive care; outer islands and smaller centres have far more limited facilities, and a serious medical event on Taveuni, Kadavu, or a remote Lau island could genuinely require evacuation to Suva or even to Australia or New Zealand. Confirm your policy's evacuation limit is high enough to cover this realistically — this is one area where it's worth paying more for a policy that actually reflects Fiji's geography rather than a generic low-cost option.",
+    ],
+    faqs: [
+      {
+        q: 'Does travel insurance cover wheelchair damage in Fiji?',
+        a: 'It depends entirely on the policy. Standard baggage cover often caps claims well below a wheelchair\'s value, or excludes mobility aids from standard cover altogether. Check whether your policy treats mobility equipment as an "assistive device" requiring a specific rider before you travel.',
+      },
+      {
+        q: 'Do I need medical evacuation cover for outer islands?',
+        a: "Strongly worth having. Suva and Lautoka have Fiji's main hospitals; outer islands and smaller centres have far more limited facilities, and a serious medical event there could require evacuation to Suva or overseas. Confirm your policy's evacuation limit realistically covers this.",
+      },
+      {
+        q: 'Should I declare a pre-existing disability for travel insurance?',
+        a: "Yes, always, and honestly. Insurers can decline claims — including unrelated ones — where a pre-existing condition wasn't disclosed at the time of purchase.",
+      },
+      {
+        q: 'What happens if my mobility equipment breaks in Fiji?',
+        a: "This depends on your policy's specific mobility equipment or assistive device coverage — check the claim process and any required documentation (like a police or venue report) before you travel, since gathering this after the fact in a remote location is much harder.",
+      },
+    ],
+    facilityQueries: [],
+    searchLink: '/search',
+  },
 ]
 
 export function getGuide(slug) {

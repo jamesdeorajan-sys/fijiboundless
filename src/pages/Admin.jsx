@@ -49,10 +49,12 @@ export default function Admin() {
           }}
         >
           <h1 style={s.gateTitle}>Admin access</h1>
-          <p style={s.gateSub}>Enter the admin password to manage facilities, verifications, and alerts.</p>
+          <p style={s.gateSub} id="gate-desc">Enter the admin password to manage facilities, verifications, and alerts.</p>
+          <label style={s.label} htmlFor="gate-password">Admin password</label>
           <input
-            type="password" value={password} onChange={e => setPassword(e.target.value)}
-            placeholder="Admin password" style={s.gateInput} autoFocus
+            id="gate-password" type="password" value={password} onChange={e => setPassword(e.target.value)}
+            style={s.gateInput} autoFocus aria-describedby="gate-desc"
+            autoComplete="current-password"
           />
           {authError && <div style={s.gateError}>⚠ {authError}</div>}
           <button type="submit" style={s.gateBtn} disabled={authLoading}>
@@ -145,20 +147,50 @@ function AddFacilityForm({ adminPost, onCreated }) {
     <Panel title="1. Add a new facility">
       <form onSubmit={submit} style={s.form}>
         <div className="grid-responsive-2col">
-          <input style={s.input} placeholder="Name" value={form.name} onChange={e => set('name', e.target.value)} required />
-          <select style={s.input} value={form.category} onChange={e => set('category', e.target.value)}>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <select style={s.input} value={form.division} onChange={e => set('division', e.target.value)}>
-            {DIVISIONS.map(d => <option key={d} value={d}>{d}</option>)}
-          </select>
-          <input style={s.input} placeholder="Island" value={form.island} onChange={e => set('island', e.target.value)} required />
-          <input style={s.input} placeholder="Town / area" value={form.town_or_area} onChange={e => set('town_or_area', e.target.value)} required />
-          <input style={s.input} placeholder="Address" value={form.address} onChange={e => set('address', e.target.value)} />
-          <input style={s.input} placeholder="Latitude" value={form.lat} onChange={e => set('lat', e.target.value)} required />
-          <input style={s.input} placeholder="Longitude" value={form.lng} onChange={e => set('lng', e.target.value)} required />
-          <input style={s.input} placeholder="Phone (optional)" value={form.phone} onChange={e => set('phone', e.target.value)} />
-          <input style={s.input} placeholder="Website (optional)" value={form.website} onChange={e => set('website', e.target.value)} />
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-name">Name</label>
+            <input id="af-name" style={s.input} value={form.name} onChange={e => set('name', e.target.value)} required />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-category">Category</label>
+            <select id="af-category" style={s.input} value={form.category} onChange={e => set('category', e.target.value)}>
+              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-division">Division</label>
+            <select id="af-division" style={s.input} value={form.division} onChange={e => set('division', e.target.value)}>
+              {DIVISIONS.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-island">Island</label>
+            <input id="af-island" style={s.input} value={form.island} onChange={e => set('island', e.target.value)} required />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-town">Town / area</label>
+            <input id="af-town" style={s.input} value={form.town_or_area} onChange={e => set('town_or_area', e.target.value)} required />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-address">Address</label>
+            <input id="af-address" style={s.input} value={form.address} onChange={e => set('address', e.target.value)} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-lat">Latitude</label>
+            <input id="af-lat" style={s.input} value={form.lat} onChange={e => set('lat', e.target.value)} required />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-lng">Longitude</label>
+            <input id="af-lng" style={s.input} value={form.lng} onChange={e => set('lng', e.target.value)} required />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-phone">Phone (optional)</label>
+            <input id="af-phone" style={s.input} value={form.phone} onChange={e => set('phone', e.target.value)} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="af-website">Website (optional)</label>
+            <input id="af-website" style={s.input} value={form.website} onChange={e => set('website', e.target.value)} />
+          </div>
         </div>
         <button type="submit" style={s.submitBtn}>Add facility</button>
         <StatusMsg status={status} />
@@ -188,34 +220,64 @@ function AccessibilityFeaturesForm({ adminPost, facilities }) {
   return (
     <Panel title="2. Add accessibility features">
       <form onSubmit={submit} style={s.form}>
-        <select style={s.input} value={facilityId} onChange={e => setFacilityId(e.target.value)} required>
-          <option value="">Select facility…</option>
-          {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
-        </select>
-
-        <div style={s.checkGrid}>
-          {BOOL_FEATURES.map(([key, label]) => (
-            <label key={key} style={s.checkLabel}>
-              <input
-                type="checkbox"
-                checked={!!bools[key]}
-                onChange={e => setBools(b => ({ ...b, [key]: e.target.checked }))}
-              />
-              {label}
-            </label>
-          ))}
+        <div style={s.field}>
+          <label style={s.label} htmlFor="acc-facility">Facility</label>
+          <select id="acc-facility" style={s.input} value={facilityId} onChange={e => setFacilityId(e.target.value)} required>
+            <option value="">Select facility…</option>
+            {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
+          </select>
         </div>
+
+        <fieldset style={s.fieldset}>
+          <legend style={s.legend}>Accessibility features present</legend>
+          <div style={s.checkGrid}>
+            {BOOL_FEATURES.map(([key, label]) => (
+              <label key={key} style={s.checkLabel}>
+                <input
+                  type="checkbox"
+                  checked={!!bools[key]}
+                  onChange={e => setBools(b => ({ ...b, [key]: e.target.checked }))}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <div className="grid-responsive-2col">
-          <input style={s.input} placeholder="Ramp gradient %" value={other.ramp_gradient_percent} onChange={e => setOther(o => ({ ...o, ramp_gradient_percent: e.target.value }))} />
-          <input style={s.input} placeholder="Door width (cm)" value={other.door_width_cm} onChange={e => setOther(o => ({ ...o, door_width_cm: e.target.value }))} />
-          <input style={s.input} placeholder="Turning circle (cm)" value={other.turning_circle_cm} onChange={e => setOther(o => ({ ...o, turning_circle_cm: e.target.value }))} />
-          <input style={s.input} placeholder="Sensory friendly rating (1-5)" value={other.sensory_friendly_rating} onChange={e => setOther(o => ({ ...o, sensory_friendly_rating: e.target.value }))} />
-          <input style={s.input} placeholder="Noise level rating (1-5)" value={other.noise_level_rating} onChange={e => setOther(o => ({ ...o, noise_level_rating: e.target.value }))} />
-          <input style={s.input} placeholder="Quiet hours start (HH:MM)" value={other.quiet_hours_start} onChange={e => setOther(o => ({ ...o, quiet_hours_start: e.target.value }))} />
-          <input style={s.input} placeholder="Quiet hours end (HH:MM)" value={other.quiet_hours_end} onChange={e => setOther(o => ({ ...o, quiet_hours_end: e.target.value }))} />
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-ramp">Ramp gradient %</label>
+            <input id="acc-ramp" style={s.input} value={other.ramp_gradient_percent} onChange={e => setOther(o => ({ ...o, ramp_gradient_percent: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-door">Door width (cm)</label>
+            <input id="acc-door" style={s.input} value={other.door_width_cm} onChange={e => setOther(o => ({ ...o, door_width_cm: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-turning">Turning circle (cm)</label>
+            <input id="acc-turning" style={s.input} value={other.turning_circle_cm} onChange={e => setOther(o => ({ ...o, turning_circle_cm: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-sensory">Sensory friendly rating (1-5)</label>
+            <input id="acc-sensory" style={s.input} value={other.sensory_friendly_rating} onChange={e => setOther(o => ({ ...o, sensory_friendly_rating: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-noise">Noise level rating (1-5)</label>
+            <input id="acc-noise" style={s.input} value={other.noise_level_rating} onChange={e => setOther(o => ({ ...o, noise_level_rating: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-qstart">Quiet hours start (HH:MM)</label>
+            <input id="acc-qstart" style={s.input} value={other.quiet_hours_start} onChange={e => setOther(o => ({ ...o, quiet_hours_start: e.target.value }))} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="acc-qend">Quiet hours end (HH:MM)</label>
+            <input id="acc-qend" style={s.input} value={other.quiet_hours_end} onChange={e => setOther(o => ({ ...o, quiet_hours_end: e.target.value }))} />
+          </div>
         </div>
-        <textarea style={s.textarea} placeholder="Boat access notes (optional)" value={other.boat_notes} onChange={e => setOther(o => ({ ...o, boat_notes: e.target.value }))} rows={2} />
+        <div style={s.field}>
+          <label style={s.label} htmlFor="acc-boat">Boat access notes (optional)</label>
+          <textarea id="acc-boat" style={s.textarea} value={other.boat_notes} onChange={e => setOther(o => ({ ...o, boat_notes: e.target.value }))} rows={2} />
+        </div>
 
         <button type="submit" style={s.submitBtn}>Save accessibility features</button>
         <StatusMsg status={status} />
@@ -246,19 +308,34 @@ function VerificationForm({ adminPost, facilities }) {
     <Panel title="3. Submit a verification">
       <form onSubmit={submit} style={s.form}>
         <div className="grid-responsive-2col">
-          <select style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
-            <option value="">Select facility…</option>
-            {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
-          </select>
-          <select style={s.input} value={form.verified_by} onChange={e => set('verified_by', e.target.value)}>
-            {VERIFY_SOURCES.map(v => <option key={v} value={v}>{v}</option>)}
-          </select>
-          <input style={s.input} placeholder="Verifier name" value={form.verifier_name} onChange={e => set('verifier_name', e.target.value)} />
-          <select style={s.input} value={form.status} onChange={e => set('status', e.target.value)}>
-            {VERIFY_STATUSES.map(v => <option key={v} value={v}>{v}</option>)}
-          </select>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="ver-facility">Facility</label>
+            <select id="ver-facility" style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
+              <option value="">Select facility…</option>
+              {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="ver-source">Verified by</label>
+            <select id="ver-source" style={s.input} value={form.verified_by} onChange={e => set('verified_by', e.target.value)}>
+              {VERIFY_SOURCES.map(v => <option key={v} value={v}>{v}</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="ver-name">Verifier name</label>
+            <input id="ver-name" style={s.input} value={form.verifier_name} onChange={e => set('verifier_name', e.target.value)} />
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="ver-status">Status</label>
+            <select id="ver-status" style={s.input} value={form.status} onChange={e => set('status', e.target.value)}>
+              {VERIFY_STATUSES.map(v => <option key={v} value={v}>{v}</option>)}
+            </select>
+          </div>
         </div>
-        <textarea style={s.textarea} placeholder="Notes" value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} />
+        <div style={s.field}>
+          <label style={s.label} htmlFor="ver-notes">Notes</label>
+          <textarea id="ver-notes" style={s.textarea} value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} />
+        </div>
         <button type="submit" style={s.submitBtn}>Submit verification</button>
         <StatusMsg status={status} />
       </form>
@@ -289,16 +366,28 @@ function AlertForm({ adminPost, facilities, onCreated }) {
     <Panel title="4. Post a live alert">
       <form onSubmit={submit} style={s.form}>
         <div className="grid-responsive-2col">
-          <select style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
-            <option value="">Select facility…</option>
-            {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
-          </select>
-          <select style={s.input} value={form.alert_type} onChange={e => set('alert_type', e.target.value)}>
-            {ALERT_TYPES.map(a => <option key={a} value={a}>{a}</option>)}
-          </select>
-          <input style={s.input} placeholder="Reported by" value={form.reported_by} onChange={e => set('reported_by', e.target.value)} />
+          <div style={s.field}>
+            <label style={s.label} htmlFor="alert-facility">Facility</label>
+            <select id="alert-facility" style={s.input} value={form.facility_id} onChange={e => set('facility_id', e.target.value)} required>
+              <option value="">Select facility…</option>
+              {facilities.map(f => <option key={f.id} value={f.id}>{f.name} ({f.town_or_area})</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="alert-type">Alert type</label>
+            <select id="alert-type" style={s.input} value={form.alert_type} onChange={e => set('alert_type', e.target.value)}>
+              {ALERT_TYPES.map(a => <option key={a} value={a}>{a}</option>)}
+            </select>
+          </div>
+          <div style={s.field}>
+            <label style={s.label} htmlFor="alert-reporter">Reported by</label>
+            <input id="alert-reporter" style={s.input} value={form.reported_by} onChange={e => set('reported_by', e.target.value)} />
+          </div>
         </div>
-        <textarea style={s.textarea} placeholder="Alert message" value={form.message} onChange={e => set('message', e.target.value)} rows={2} required />
+        <div style={s.field}>
+          <label style={s.label} htmlFor="alert-message">Alert message</label>
+          <textarea id="alert-message" style={s.textarea} value={form.message} onChange={e => set('message', e.target.value)} rows={2} required />
+        </div>
         <button type="submit" style={s.submitBtn}>Post alert</button>
         <StatusMsg status={status} />
       </form>
@@ -442,6 +531,16 @@ const s = {
   panelTitle: { fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', color: '#0D2B3E', marginBottom: 18 },
 
   form: { display: 'flex', flexDirection: 'column', gap: 14 },
+  field: { display: 'flex', flexDirection: 'column', gap: 6 },
+  label: {
+    fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.05em',
+    textTransform: 'uppercase', color: '#4A3F2F',
+  },
+  fieldset: { border: 'none', padding: 0, margin: 0 },
+  legend: {
+    fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.05em',
+    textTransform: 'uppercase', color: '#4A3F2F', padding: 0, marginBottom: 8,
+  },
   input: {
     padding: '10px 12px', background: '#FDFAF5', border: '1px solid #D4C9B0',
     borderRadius: 7, fontSize: '0.88rem', color: '#1A1208',

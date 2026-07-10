@@ -209,6 +209,19 @@ export default function Facility() {
 
         {/* ── Sidebar ── */}
         <aside className="facility-aside" style={s.aside}>
+          {facility.category === 'hotel' && (
+            // Booking.com affiliate search link. BOOKING_AFFILIATE_ID below is a
+            // placeholder — replace it with the real "aid" value once signed up
+            // for the Booking.com Affiliate Partner Program, or this link earns
+            // no commission (it still works as a plain search link either way).
+            <a
+              href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(`${facility.name}, ${facility.island}, Fiji`)}&aid=BOOKING_AFFILIATE_ID`}
+              target="_blank" rel="noopener noreferrer sponsored"
+              style={s.bookBtn}
+            >
+              🏨 Check availability & book →
+            </a>
+          )}
           {facility.phone && (
             <a href={`tel:${facility.phone}`} style={s.contactBtn}>📞 {facility.phone}</a>
           )}
@@ -314,6 +327,13 @@ const s = {
     background: '#F5EDD6', border: '1px solid #D4C9B0',
     borderRadius: 8, fontSize: '0.88rem', color: '#0D2B3E',
     fontWeight: 600, transition: 'background 200ms',
+  },
+  bookBtn: {
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+    padding: '13px 16px', marginBottom: 14,
+    background: '#E8634A', border: 'none',
+    borderRadius: 8, fontSize: '0.92rem', color: '#FDFAF5',
+    fontWeight: 700, transition: 'background 200ms',
   },
   verifyBox: {
     marginTop: 16,

@@ -146,50 +146,53 @@ export default function Concierge() {
             </label>
           </div>
 
-          <div style={s.field}>
-            <label style={s.label}>Sensory sensitivities</label>
+          <fieldset style={s.fieldset}>
+            <legend style={s.label}>Sensory sensitivities</legend>
             <div style={s.chipRow}>
               {SENSITIVITIES.map(sn => (
                 <button
                   type="button" key={sn.value}
                   onClick={() => toggle(sensitivities, setSensitivities, sn.value)}
+                  aria-pressed={sensitivities.includes(sn.value)}
                   style={{ ...s.chip, ...(sensitivities.includes(sn.value) ? s.chipActive : {}) }}
                 >
                   {sn.label}
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
-          <div style={s.field}>
-            <label style={s.label}>Preferred regions</label>
+          <fieldset style={s.fieldset}>
+            <legend style={s.label}>Preferred regions</legend>
             <div style={s.chipRow}>
               {DIVISIONS.map(d => (
                 <button
                   type="button" key={d}
                   onClick={() => toggle(divisions, setDivisions, d)}
+                  aria-pressed={divisions.includes(d)}
                   style={{ ...s.chip, ...(divisions.includes(d) ? s.chipActive : {}) }}
                 >
                   {d} Fiji
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
-          <div style={s.field}>
-            <label style={s.label}>Interested in</label>
+          <fieldset style={s.fieldset}>
+            <legend style={s.label}>Interested in</legend>
             <div style={s.chipRow}>
               {CATEGORIES.map(c => (
                 <button
                   type="button" key={c.value}
                   onClick={() => toggle(categories, setCategories, c.value)}
+                  aria-pressed={categories.includes(c.value)}
                   style={{ ...s.chip, ...(categories.includes(c.value) ? s.chipActive : {}) }}
                 >
                   {c.label}
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           <div style={s.field}>
             <label style={s.label}>Anything else we should know?</label>
@@ -284,6 +287,7 @@ const s = {
     alignItems: 'end',
   },
   field: { display: 'flex', flexDirection: 'column', gap: 8 },
+  fieldset: { border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 },
   label: {
     fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em',
     textTransform: 'uppercase', color: '#4A3F2F',
