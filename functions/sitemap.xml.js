@@ -1,6 +1,6 @@
 import { GUIDES } from '../src/data/guides.js'
 
-const SITE = 'https://fijiboundless.pages.dev'
+const SITE = 'https://fijiboundless.com'
 
 // Guides content was last touched (added/edited) on this date — used as a
 // single, honest <lastmod> for all guide URLs rather than fabricating

@@ -67,7 +67,7 @@ npm run deploy
 
 This builds React and deploys everything — frontend + API functions + D1 binding — in one command.
 
-Your site will be live at `https://fijiboundless.pages.dev` (or your custom domain).
+Your site will be live at `https://fijiboundless.com` (or your custom domain).
 
 ---
 

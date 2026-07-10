@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 // Temporary stand-in so og:image always points at something real and
 // self-hosted rather than a guessed/placeholder URL that might not resolve.
 // Swap for a proper 1200x630 PNG/JPG once one exists.
-const DEFAULT_OG_IMAGE = 'https://fijiboundless.pages.dev/favicon.svg'
+const DEFAULT_OG_IMAGE = 'https://fijiboundless.com/favicon.svg'
 
 function upsertMeta(attr, key, content, created, restored) {
   let tag = document.querySelector(`meta[${attr}="${key}"]`)

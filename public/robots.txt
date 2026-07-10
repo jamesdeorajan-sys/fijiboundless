@@ -1,5 +1,4 @@
-# Update the Sitemap URL below to fijiboundless.com once the custom domain is live.
 User-agent: *
 Allow: /
 
-Sitemap: https://fijiboundless.pages.dev/sitemap.xml
+Sitemap: https://fijiboundless.com/sitemap.xml

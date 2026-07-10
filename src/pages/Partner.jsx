@@ -120,7 +120,7 @@ export default function Partner() {
             itineraries or checking a property before you recommend it to a client.
           </p>
           <pre style={s.codeBlock}>
-{`GET https://fijiboundless.pages.dev/api/facilities?category=hotel&division=Western
+{`GET https://fijiboundless.com/api/facilities?category=hotel&division=Western
 
 {
   "count": 23,

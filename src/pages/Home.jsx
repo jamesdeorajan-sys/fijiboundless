@@ -6,7 +6,7 @@ const ORGANIZATION_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'FijiBoundless',
-  url: 'https://fijiboundless.pages.dev',
+  url: 'https://fijiboundless.com',
   description: 'Verified accessibility guide to Fiji',
   areaServed: 'Fiji',
 }
